@@ -3,9 +3,6 @@
  * and open the template in the editor.
  */
 
-
-
-
 package WingmanGame;
 
 import java.awt.*;
