@@ -25,5 +25,8 @@ public class KeyControl extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         gameEvents.setValue(e);
     }
+    public void keyReleased(KeyEvent e){
+        gameEvents.setValue(e);
+    }
     
 }

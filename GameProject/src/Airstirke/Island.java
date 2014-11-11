@@ -40,8 +40,5 @@ public class Island {
      public void draw(Graphics g,ImageObserver obs) {
           g.drawImage(img, x, y, obs);
      }
-     
-     //update, if collision happen, make the bullet disappear?
-     //if no collsion happen, fly out of the frame, and then?
     
 }

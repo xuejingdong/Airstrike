@@ -38,4 +38,9 @@ public class Bullet {
     
      //update, if collision happen, make the bullet disappear?
      //if no collsion happen, fly out of the frame, and then?
+    public void update(){
+        this.y = y + speed;
+        //if(y < 0)
+        
+    }
 }
