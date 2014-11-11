@@ -11,37 +11,31 @@ package Airstirke;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.util.Random;
+import java.awt.Rectangle;
 
-/**
- *
- * @author Dong
- */
-public class Island {
+public class Bullet {
+    int x, y, speed, damage,width, length;
+    Rectangle bulletBox;
     Image img;
-    int x, y, speed;
-    Random gen;
-
-    Island(Image img, int x, int y, int speed, Random gen) {
+    
+    public Bullet(Image img, int x, int y, int damage, int speed){
         this.img = img;
         this.x = x;
         this.y = y;
+        this.damage = damage;
         this.speed = speed;
-        this.gen = gen;
+        this.width = img.getWidth(null);
+        this.length = img.getHeight(null);
     }
-
-     public void update() {
-         y += speed;
-         if (y >= 480) {
-             y = -100;
-             x = Math.abs(gen.nextInt() % (640 - 30));
-         }
-     }
-
-     public void draw(Graphics g,ImageObserver obs) {
-          g.drawImage(img, x, y, obs);
-     }
-     
+    
+    public int getDamge(){
+        return this.damage;
+    }
+    
+    public Rectangle getRectangle(){
+        return this.bulletBox;
+    }
+    
      //update, if collision happen, make the bullet disappear?
      //if no collsion happen, fly out of the frame, and then?
-    
 }
