@@ -8,7 +8,7 @@ package Airstirke;
  *
  * @author Dong
  */
-import java.awt.Image;
+import java.awt.*;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.ImageObserver;
@@ -17,35 +17,36 @@ import java.util.Observable;
 
 public class PlayerPlane implements Observer{
     Image img;
-        int x, y, speed, width, height;
-        Rectangle bbox;
-        boolean boom;
+    int x, y, speed, width, height;
+    Rectangle bbox;
+    boolean boom;
 
-        PlayerPlane(Image img, int x, int y, int speed) {
-            this.img = img;
-            this.x = x;
-            this.y = y;
-            this.speed = speed;
-            width = img.getWidth(null);
-            height = img.getHeight(null);
-            boom = false;
-        }
+    PlayerPlane(Image img, int x, int y, int speed) {
+         this.img = img;
+         this.x = x;
+         this.y = y;
+         this.speed = speed;
+         width = img.getWidth(null);
+         height = img.getHeight(null);
+         boom = false;
+    }
 
-        public void draw(ImageObserver obs) {
-            g2.drawImage(img, x, y, obs);
-        }
+     public void draw(Graphics g, ImageObserver obs){
+        g.drawImage(img, x, y, obs);
+    
+    }
         
-        public boolean collision(int x, int y, int w, int h) {
-            bbox = new Rectangle(this.x, this.y, this.width, this.height);
-            Rectangle otherBBox = new Rectangle (x,y,w,h);
-            if(this.bbox.intersects(otherBBox)) { 
-                return true;
-            }
-            return false;
+    public boolean collision(int x, int y, int w, int h) {
+        bbox = new Rectangle(this.x, this.y, this.width, this.height);
+        Rectangle otherBBox = new Rectangle (x,y,w,h);
+        if(this.bbox.intersects(otherBBox)) { 
+             return true;
         }
+        return false;
+    }
       
         public void update(Observable obj, Object arg) {
-            game1942WithObserver.GameEvents ge = (game1942WithObserver.GameEvents) arg;
+            GameEvents ge = (GameEvents) arg;
             if(ge.type == 1) {
                 KeyEvent e = (KeyEvent) ge.event;
                 switch (e.getKeyCode()) {    

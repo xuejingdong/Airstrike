@@ -8,7 +8,7 @@ package Airstirke;
  *
  * @author Dong
  */
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.util.Random;
 
@@ -57,9 +57,9 @@ public class EnemyPlane {
             this.y = -10;
         }
 
-        public void draw(ImageObserver obs) {
+        public void draw(Graphics g,ImageObserver obs) {
             if (show) {
-                g2.drawImage(img, x, y, obs);
+                g.drawImage(img, x, y, obs);
             }
         }
     }
