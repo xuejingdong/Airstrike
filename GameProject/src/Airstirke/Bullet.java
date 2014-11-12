@@ -14,7 +14,7 @@ import java.util.Random;
 import java.awt.Rectangle;
 
 public class Bullet {
-    int x, y, speed, damage,width, length;
+    int x, y, speed, damage,width, height;
     Rectangle bulletBox;
     Image img;
     
@@ -25,9 +25,17 @@ public class Bullet {
         this.damage = damage;
         this.speed = speed;
         this.width = img.getWidth(null);
-        this.length = img.getHeight(null);
+        this.height = img.getHeight(null);
+        this.bulletBox= new Rectangle(this.x, this.y, this.width, this.height);
+    }
+     public int getX(){
+        return this.x;
     }
     
+    public int getY(){
+        return this.y;
+    }
+       
     public int getDamge(){
         return this.damage;
     }
@@ -36,6 +44,13 @@ public class Bullet {
         return this.bulletBox;
     }
     
+    public void setX(int a){
+        this.x = a;
+    }
+    
+     public void setY(int b){
+        this.y = b;
+    }
      //update, if collision happen, make the bullet disappear?
      //if no collsion happen, fly out of the frame, and then?
     public void update(){

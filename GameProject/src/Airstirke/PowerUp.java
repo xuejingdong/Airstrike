@@ -14,7 +14,7 @@ import java.util.Random;
 import java.awt.Rectangle;
 
 public class PowerUp {
-    int x, y, width, length;
+    int x, y, width, height;
     Rectangle powerBox;
     Image img;
     int powerType;
@@ -24,10 +24,33 @@ public class PowerUp {
         this.x = x;
         this.y = y;
         this.width = img.getWidth(null);
-        this.length = img.getHeight(null);
+        this.height = img.getHeight(null);
         this.powerType = powerType;
+        this.powerBox= new Rectangle(this.x, this.y, this.width, this.height);
+    }
+    public int getX(){
+        return this.x;
     }
     
+    public int getY(){
+        return this.y;
+    }
+       
+    public Rectangle getRectangle(){
+        return this.powerBox;
+    }
+    
+    public int getPowerType(){
+        return this.powerType;
+    }
+    
+    public void setX(int a){
+        this.x = a;
+    }
+    
+     public void setY(int b){
+        this.y = b;
+     }
     public void draw(Graphics g, ImageObserver obs){
         g.drawImage(img, x, y, obs);
     

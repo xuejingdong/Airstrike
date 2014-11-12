@@ -28,7 +28,28 @@ public class PlayerPlane implements Observer{
          this.speed = speed;
          width = img.getWidth(null);
          height = img.getHeight(null);
+         bbox = new Rectangle(this.x, this.y, this.width, this.height);
          boom = false;
+    }
+    
+    public int getX(){
+        return this.x;
+    }
+    
+    public int getY(){
+        return this.y;
+    }
+    
+    public Rectangle getRectangle(){
+        return this.bbox;
+    }
+    
+    public void setX(int a){
+        this.x = a;
+    }
+    
+     public void setY(int b){
+        this.y = b;
     }
 
      public void draw(Graphics g, ImageObserver obs){

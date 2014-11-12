@@ -18,9 +18,10 @@ import java.util.Random;
  */
 public class EnemyPlane {
     Image img;
-    int x, y, sizeX, sizeY, speed;
+    int x, y, width, height, speed;
     Random gen;
     boolean show;
+    Rectangle eneBox;
     Random generator = new Random(1234567);
     GameEvents gameEvents;
    
@@ -31,10 +32,31 @@ public class EnemyPlane {
         this.speed = speed;
         this.gen = gen;
         this.show = true;
-        sizeX = img.getWidth(null);
-        sizeY = img.getHeight(null);
+        this.width = img.getWidth(null);
+        this.height = img.getHeight(null);
         this.gameEvents = gameEvent;
-        System.out.println("w:" + sizeX + " y:" + sizeY);
+        this.eneBox = new Rectangle(this.x, this.y, this.width, this.height); 
+        System.out.println("w:" + width + " y:" + height);
+    }
+    
+    public int getX(){
+        return this.x;
+    }
+    
+    public int getY(){
+        return this.y;
+    }
+    
+    public Rectangle getRectangle(){
+        return this.eneBox;
+    }
+    
+    public void setX(int a){
+        this.x = a;
+    }
+    
+     public void setY(int b){
+        this.y = b;
     }
 
         public void update() {
