@@ -18,6 +18,9 @@ import java.awt.event.KeyEvent;
 public class KeyControl extends KeyAdapter {
     private GameEvents gameEvents;
     
+    public KeyControl(){
+        
+    }
     public KeyControl(GameEvents ge){
         this.gameEvents = ge;
     }

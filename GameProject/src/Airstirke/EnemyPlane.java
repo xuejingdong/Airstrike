@@ -25,7 +25,7 @@ public class EnemyPlane {
     Random generator = new Random(1234567);
     GameEvents gameEvents;
    
-    EnemyPlane(Image img, int speed, Random gen,GameEvents gameEvent){ 
+    EnemyPlane(Image img, int speed, Random gen){ 
         this.img = img;
         this.x = Math.abs(gen.nextInt() % (600 - 30));
         this.y = -20;
@@ -34,7 +34,7 @@ public class EnemyPlane {
         this.show = true;
         this.width = img.getWidth(null);
         this.height = img.getHeight(null);
-        this.gameEvents = gameEvent;
+        //this.gameEvents = gameEvent;
         this.eneBox = new Rectangle(this.x, this.y, this.width, this.height); 
         System.out.println("w:" + width + " y:" + height);
     }
@@ -62,7 +62,7 @@ public class EnemyPlane {
         public void update() {
             y += speed;
             //Collision part would be handled in collision detecter
-            /*if(m.collision(x, y, sizeX, sizeY)) {
+           /* if(m.collision(x, y, sizeX, sizeY)) {
                 show = false;
                 // You need to remove this one and increase score etc
                 gameEvents.setValue("Explosion");
