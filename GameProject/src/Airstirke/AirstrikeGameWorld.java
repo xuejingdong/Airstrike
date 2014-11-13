@@ -94,13 +94,13 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
             e1.update();
             //bullet.update();
             
-            drawBackGroundWithTileImage();
             I1.draw(g2,this);
             I2.draw(g2,this);
             I3.draw(g2,this);
             m.draw(g2,this);
             e1.draw(g2,this);
             //bullet.draw(this);
+            drawBackGroundWithTileImage();
     }
 
     public void paint(Graphics g) {
