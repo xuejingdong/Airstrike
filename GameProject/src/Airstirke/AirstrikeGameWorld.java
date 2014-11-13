@@ -14,7 +14,7 @@ import java.awt.image.*;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Random;
+import java.util.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -35,7 +35,10 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
     EnemyPlane e1;
     GameEvents gameEvents;
     Bullet bullet;
-    
+    int eneCount = 5;
+    CollisionDetector CD = new CollisionDetector();
+    java.util.List<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
+       
     public void init() {
         setFocusable(true);
         setBackground(Color.white);
@@ -54,7 +57,10 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
         I1 = new Island(island1, 100, 100, speed, generator);
         I2 = new Island(island2, 200, 400, speed, generator);
         I3 = new Island(island3, 300, 200, speed, generator);
-        e1 = new EnemyPlane(enemyImg, 1, generator);
+        //e1 = new EnemyPlane(enemyImg, 1, generator);
+        for(int i = 0; i < eneCount; i++){
+            enemyl.add( new EnemyPlane(enemyImg, 1, generator));
+        }
         m = new PlayerPlane(myPlane, 300, 360, 5);
         
         
@@ -91,16 +97,23 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
             I1.update();
             I2.update();
             I3.update();
-            e1.update();
+            //e1.update();
+            for(int i = 0; i < eneCount; i++){
+                enemyl.get(i).update();
+            }
             //bullet.update();
             
+            drawBackGroundWithTileImage();
             I1.draw(g2,this);
             I2.draw(g2,this);
             I3.draw(g2,this);
             m.draw(g2,this);
-            e1.draw(g2,this);
+            //e1.draw(g2, this);
+            for(int i = 0; i < eneCount; i++){
+                enemyl.get(i).draw(g2,this);
+            }
             //bullet.draw(this);
-            drawBackGroundWithTileImage();
+            
     }
 
     public void paint(Graphics g) {

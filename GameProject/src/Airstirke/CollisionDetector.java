@@ -8,6 +8,7 @@ package Airstirke;
  *
  * @author Dong
  */
+import java.util.List;
 public class CollisionDetector {
     public boolean playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
         //check if there is intersection between 2 plane
@@ -15,10 +16,11 @@ public class CollisionDetector {
             return true;
         return false;
     }
-    public boolean playerVSenemy(PlayerPlane pp, EnemyPlane pe){
-        if((pp.getRectangle()).intersects(pe.getRectangle()))
-            return true;
-        return false;
+    public void playerVSenemy(PlayerPlane pp, List<EnemyPlane> el){
+        for(int i =0; i < el.size(); i++){
+            if((pp.getRectangle()).intersects(el.get(i).getRectangle()))
+                el.get(i).update(1);
+        }
     }
     public boolean playerVSenemyBullet(PlayerPlane pp, Bullet b){
         if((pp.getRectangle()).intersects(b.getRectangle()))

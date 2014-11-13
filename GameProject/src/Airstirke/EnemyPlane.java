@@ -61,6 +61,7 @@ public class EnemyPlane {
 
         public void update() {
             y += speed;
+            
             //Collision part would be handled in collision detecter
            /* if(m.collision(x, y, sizeX, sizeY)) {
                 show = false;
@@ -72,6 +73,13 @@ public class EnemyPlane {
             }
             else 
                 gameEvents.setValue("");*/
+        }
+        public void update(int dum){
+            show = false;
+            gameEvents.setValue("Explosion");
+                gameEvents.setValue("");
+                this.reset();
+                show = true;
         }
         
         public void reset() {
