@@ -21,7 +21,7 @@ public class EnemyPlane {
     int x, y, width, height, speed;
     Random gen;
     boolean show;
-    Random generator = new Random(1234567);
+    Random generator = new Random();
     GameEvents gameEvents;
    
     EnemyPlane(Image img, int speed, Random gen){ 
@@ -63,7 +63,7 @@ public class EnemyPlane {
 
         public void update() {
             y += speed;
-            if(y > 410)
+            if(y > 430)
                 this.reset();
         }
         public void update(int dum){
