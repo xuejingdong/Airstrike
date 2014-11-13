@@ -15,7 +15,6 @@ import java.awt.Rectangle;
 
 public class PowerUp {
     int x, y, width, height;
-    Rectangle powerBox;
     Image img;
     int powerType;
     
@@ -26,7 +25,6 @@ public class PowerUp {
         this.width = img.getWidth(null);
         this.height = img.getHeight(null);
         this.powerType = powerType;
-        this.powerBox= new Rectangle(this.x, this.y, this.width, this.height);
     }
     public int getX(){
         return this.x;
@@ -35,11 +33,15 @@ public class PowerUp {
     public int getY(){
         return this.y;
     }
-       
-    public Rectangle getRectangle(){
-        return this.powerBox;
+    
+    public int getWidth(){
+        return this.width;
     }
     
+    public int getHeight(){
+        return this.height;
+    }
+        
     public int getPowerType(){
         return this.powerType;
     }

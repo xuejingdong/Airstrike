@@ -8,28 +8,28 @@ package Airstirke;
  *
  * @author Dong
  */
+import java.awt.Rectangle;
 import java.util.List;
 public class CollisionDetector {
-    public boolean playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
+    public void playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
         //check if there is intersection between 2 plane
-        if((pp.getRectangle()).intersects(pp2.getRectangle()))
-            return true;
-        return false;
+        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
+        Rectangle pbox2 = new Rectangle(pp2.getX(), pp2.getY(), pp2.getWidth(), pp2.getWidth());
+        //if(pbox.intersects(pbox2))
+           
     }
     public void playerVSenemy(PlayerPlane pp, List<EnemyPlane> el){
         for(int i =0; i < el.size(); i++){
-            if((pp.getRectangle()).intersects(el.get(i).getRectangle()))
+            Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
+            Rectangle otherBBox = new Rectangle(el.get(i).getX(), el.get(i).getY(),el.get(i).getWidth(), el.get(i).getWidth());
+            if(pbox.intersects(otherBBox)) 
                 el.get(i).update(1);
         }
     }
-    public boolean playerVSenemyBullet(PlayerPlane pp, Bullet b){
-        if((pp.getRectangle()).intersects(b.getRectangle()))
-            return true;
-        return false;
+    public void playerVSenemyBullet(PlayerPlane pp, Bullet b){
+        
     }
-    public boolean playerVSpowerup(PlayerPlane pp, PowerUp pu){
-        if((pp.getRectangle()).intersects(pu.getRectangle()))
-            return true;
-        return false;
+    public void playerVSpowerup(PlayerPlane pp, PowerUp pu){
+       
     }
 }

@@ -15,7 +15,6 @@ import java.awt.Rectangle;
 
 public class Bullet {
     int x, y, speed, damage,width, height;
-    Rectangle bulletBox;
     Image img;
     
     public Bullet(Image img, int x, int y, int damage, int speed){
@@ -26,7 +25,6 @@ public class Bullet {
         this.speed = speed;
         this.width = img.getWidth(null);
         this.height = img.getHeight(null);
-        this.bulletBox= new Rectangle(this.x, this.y, this.width, this.height);
     }
      public int getX(){
         return this.x;
@@ -35,13 +33,17 @@ public class Bullet {
     public int getY(){
         return this.y;
     }
-       
-    public int getDamge(){
-        return this.damage;
+    
+    public int getWidth(){
+        return this.width;
     }
     
-    public Rectangle getRectangle(){
-        return this.bulletBox;
+    public int getHeight(){
+        return this.height;
+    }
+    
+    public int getDamge(){
+        return this.damage;
     }
     
     public void setX(int a){

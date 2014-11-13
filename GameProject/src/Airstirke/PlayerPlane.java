@@ -18,7 +18,6 @@ import java.util.Observable;
 public class PlayerPlane implements Observer{
     Image img;
     int x, y, speed, width, height;
-    Rectangle bbox;
     boolean boom;
 
     PlayerPlane(Image img, int x, int y, int speed) {
@@ -28,7 +27,6 @@ public class PlayerPlane implements Observer{
          this.speed = speed;
          width = img.getWidth(null);
          height = img.getHeight(null);
-         bbox = new Rectangle(this.x, this.y, this.width, this.height);
          boom = false;
     }
     
@@ -40,8 +38,12 @@ public class PlayerPlane implements Observer{
         return this.y;
     }
     
-    public Rectangle getRectangle(){
-        return this.bbox;
+    public int getWidth(){
+        return this.width;
+    }
+    
+    public int getHeight(){
+        return this.height;
     }
     
     public void setX(int a){
@@ -57,14 +59,14 @@ public class PlayerPlane implements Observer{
     
     }
         
-    public boolean collision(int x, int y, int w, int h) {
+   /* public boolean collision(int x, int y, int w, int h) {
         bbox = new Rectangle(this.x, this.y, this.width, this.height);
         Rectangle otherBBox = new Rectangle (x,y,w,h);
         if(this.bbox.intersects(otherBBox)) { 
              return true;
         }
         return false;
-    }
+    }*/
       
         public void update(Observable obj, Object arg) {
             GameEvents ge = (GameEvents) arg;
@@ -76,7 +78,7 @@ public class PlayerPlane implements Observer{
                             x -= speed;
 	        	break; 
                     case KeyEvent.VK_RIGHT:
-                        if(x < 640)
+                        if(x < 570)
                             x += speed;
 	        	break;
                     case KeyEvent.VK_UP:
@@ -84,7 +86,7 @@ public class PlayerPlane implements Observer{
                             y -= speed;
 	        	break; 
                     case KeyEvent.VK_DOWN:
-                        if(y < 480)
+                        if(y < 400)
                             y += speed;
 	        	break;
                     default:

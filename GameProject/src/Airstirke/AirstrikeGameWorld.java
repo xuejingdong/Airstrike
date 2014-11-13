@@ -63,8 +63,6 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
         }
         m = new PlayerPlane(myPlane, 300, 360, 5);
         
-        
-        
         gameEvents = new GameEvents();
         gameEvents.addObserver(m);
         KeyControl key = new KeyControl(gameEvents);

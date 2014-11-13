@@ -21,7 +21,6 @@ public class EnemyPlane {
     int x, y, width, height, speed;
     Random gen;
     boolean show;
-    Rectangle eneBox;
     Random generator = new Random(1234567);
     GameEvents gameEvents;
    
@@ -35,7 +34,6 @@ public class EnemyPlane {
         this.width = img.getWidth(null);
         this.height = img.getHeight(null);
         //this.gameEvents = gameEvent;
-        this.eneBox = new Rectangle(this.x, this.y, this.width, this.height); 
         System.out.println("w:" + width + " y:" + height);
     }
     
@@ -47,10 +45,14 @@ public class EnemyPlane {
         return this.y;
     }
     
-    public Rectangle getRectangle(){
-        return this.eneBox;
+    public int getWidth(){
+        return this.width;
     }
     
+    public int getHeight(){
+        return this.height;
+    }
+       
     public void setX(int a){
         this.x = a;
     }
@@ -61,25 +63,15 @@ public class EnemyPlane {
 
         public void update() {
             y += speed;
-            
-            //Collision part would be handled in collision detecter
-           /* if(m.collision(x, y, sizeX, sizeY)) {
-                show = false;
-                // You need to remove this one and increase score etc
-                gameEvents.setValue("Explosion");
-                gameEvents.setValue("");
+            if(y > 410)
                 this.reset();
-                show = true;
-            }
-            else 
-                gameEvents.setValue("");*/
         }
         public void update(int dum){
             show = false;
-            gameEvents.setValue("Explosion");
-                gameEvents.setValue("");
-                this.reset();
-                show = true;
+            //gameEvents.setValue("Explosion");
+            //gameEvents.setValue("");
+            this.reset();
+            show = true;
         }
         
         public void reset() {
