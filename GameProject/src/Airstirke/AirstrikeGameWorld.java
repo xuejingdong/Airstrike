@@ -98,6 +98,7 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
             I2.update();
             I3.update();
             //e1.update();
+            CD.playerVSenemy(m, enemyl);
             for(int i = 0; i < eneCount; i++){
                 enemyl.get(i).update();
             }
