@@ -11,16 +11,16 @@ import java.awt.Image;
  * @author Dong
  */
 
-public class PlayerBullet extends Bullet{
-    PlayerPlane player;
+public class EnemyBullet extends Bullet{
+    EnemyPlane enemy;
     
-    public PlayerBullet(Image img, PlayerPlane player, int damage,int speed){
-        super(img,player.getX(),player.getY(),damage,speed);
-        this.player = player;
+    public EnemyBullet(Image img, EnemyPlane enemy, int damage,int speed){
+        super(img,enemy.getX(),enemy.getY(),damage,speed);
+        this.enemy = enemy;
     }
     
     public void update(){
-         this.y = y - this.speed;
+         this.y = y + this.speed;
          if(y < 0){
              this.show = false;
          }
