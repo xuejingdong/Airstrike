@@ -35,9 +35,12 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
     EnemyPlane e1;
     GameEvents gameEvents;
     Bullet bullet;
-    int eneCount = 5;
+    int eneCount = 10;
+    int pbCount = 100;
     CollisionDetector CD = new CollisionDetector();
-    java.util.List<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
+    static ArrayList<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
+    static ArrayList<PlayerBullet> playerbl = new ArrayList<PlayerBullet>();
+    PlayerBullet test;
        
     public void init() {
         setFocusable(true);
@@ -57,11 +60,14 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
         I1 = new Island(island1, 100, 100, speed, generator);
         I2 = new Island(island2, 200, 400, speed, generator);
         I3 = new Island(island3, 300, 200, speed, generator);
-        //e1 = new EnemyPlane(enemyImg, 1, generator);
+        m = new PlayerPlane(myPlane, 300, 360, 5);
         for(int i = 0; i < eneCount; i++){
             enemyl.add( new EnemyPlane(enemyImg, 1, generator));
         }
-        m = new PlayerPlane(myPlane, 300, 360, 5);
+        for(int i = 0; i < pbCount; i++){
+            playerbl.add(new PlayerBullet(bulletImg,m, 1,7));
+        }
+        test = new PlayerBullet(bulletImg,m, 1,1);
         
         gameEvents = new GameEvents();
         gameEvents.addObserver(m);
@@ -100,6 +106,10 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
             for(int i = 0; i < eneCount; i++){
                 enemyl.get(i).update();
             }
+            for(int i = 0; i < pbCount; i++){
+                if(playerbl.get(i).getShow())
+                    playerbl.get(i).update();
+            }
             //bullet.update();
             
             drawBackGroundWithTileImage();
@@ -111,7 +121,10 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
             for(int i = 0; i < eneCount; i++){
                 enemyl.get(i).draw(g2,this);
             }
-            //bullet.draw(this);
+            for(int i = 0; i < pbCount; i++){
+                //if(playerbl.get(i).getShow())
+                playerbl.get(i).draw(g2,this);
+            }
             
     }
 

@@ -21,7 +21,7 @@ public class Island {
     int x, y, speed;
     Random gen;
 
-    Island(Image img, int x, int y, int speed, Random gen) {
+    public Island(Image img, int x, int y, int speed, Random gen) {
         this.img = img;
         this.x = x;
         this.y = y;

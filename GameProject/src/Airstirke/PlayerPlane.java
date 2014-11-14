@@ -92,10 +92,15 @@ public class PlayerPlane implements Observer{
                     default:
                   if(e.getKeyChar() == ' ') {
                       
-                      System.out.println("Fire");  
+                      for(int h = 0, i =-1; h < 4|| i <2; h++){
+                           if(!(AirstrikeGameWorld.playerbl.get(h)).getShow()){
+                               (AirstrikeGameWorld.playerbl.get(h)).setX(this.x + i);
+                               (AirstrikeGameWorld.playerbl.get(h)).setShow(true);
+                                i++;
+                                System.out.println("Fire");
+                           }
+                      }
                   }
-                }
-            }
             else if(ge.type == 2) {
                 String msg = (String)ge.event;
                 if(msg.equals("Explosion")) {
@@ -104,6 +109,7 @@ public class PlayerPlane implements Observer{
                 }
             }
         }
-    }
+     }
+  }  
 
- 
+}

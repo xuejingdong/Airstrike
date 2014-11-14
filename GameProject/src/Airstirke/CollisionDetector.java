@@ -9,7 +9,7 @@ package Airstirke;
  * @author Dong
  */
 import java.awt.Rectangle;
-import java.util.List;
+import java.util.ArrayList;
 public class CollisionDetector {
     public void playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
         //check if there is intersection between 2 plane
@@ -18,7 +18,7 @@ public class CollisionDetector {
         //if(pbox.intersects(pbox2))
            
     }
-    public void playerVSenemy(PlayerPlane pp, List<EnemyPlane> el){
+    public void playerVSenemy(PlayerPlane pp, ArrayList<EnemyPlane> el){
         for(int i =0; i < el.size(); i++){
             Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
             Rectangle otherBBox = new Rectangle(el.get(i).getX(), el.get(i).getY(),el.get(i).getWidth(), el.get(i).getWidth());
