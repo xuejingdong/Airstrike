@@ -18,13 +18,13 @@ import java.util.Random;
  */
 public class EnemyPlane {
     Image img;
-    int x, y, width, height, speed;
+    int x, y, width, height, speed,damage;
     Random gen;
     boolean show;
     Random generator = new Random();
     GameEvents gameEvents;
    
-    EnemyPlane(Image img, int speed, Random gen){ 
+    EnemyPlane(Image img, int speed, int damage, Random gen){ 
         this.img = img;
         this.x = Math.abs(gen.nextInt() % (600 - 30));
         this.y = -20;
@@ -33,6 +33,7 @@ public class EnemyPlane {
         this.show = true;
         this.width = img.getWidth(null);
         this.height = img.getHeight(null);
+        this.damage = damage;
         //this.gameEvents = gameEvent;
         System.out.println("w:" + width + " y:" + height);
     }
@@ -52,7 +53,11 @@ public class EnemyPlane {
     public int getHeight(){
         return this.height;
     }
-       
+    
+    public int getDamage(){
+        return this.damage;
+    }
+    
     public void setX(int a){
         this.x = a;
     }
@@ -61,18 +66,21 @@ public class EnemyPlane {
         this.y = b;
     }
 
-        public void update() {
-            y += speed;
-            if(y > 430)
-                this.reset();
-        }
-        public void update(int dum){
-            show = false;
-            //gameEvents.setValue("Explosion");
-            //gameEvents.setValue("");
+     public void setDamage(int d){
+         this.damage = d;
+     }
+    public void update() {
+         y += speed;
+         if(y > 430)
             this.reset();
-            show = true;
-        }
+    }
+    public void update(int dum){
+        show = false;
+        //gameEvents.setValue("Explosion");
+        //gameEvents.setValue("");
+        this.reset();
+         show = true;
+    }
         
         public void reset() {
             this.x = Math.abs(generator.nextInt() % (600 - 30));

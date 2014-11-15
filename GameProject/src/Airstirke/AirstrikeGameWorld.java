@@ -36,6 +36,7 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
     GameEvents gameEvents;
     Bullet bullet;
     int eneCount = 10;
+    int enemyPDamage = 5;
     int pbCount = 100;
     CollisionDetector CD = new CollisionDetector();
     static ArrayList<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
@@ -62,7 +63,7 @@ public class AirstrikeGameWorld extends JApplet implements Runnable{
         I3 = new Island(island3, 300, 200, speed, generator);
         m = new PlayerPlane(myPlane, 300, 360, 5);
         for(int i = 0; i < eneCount; i++){
-            enemyl.add( new EnemyPlane(enemyImg, 1, generator));
+            enemyl.add( new EnemyPlane(enemyImg, 2,enemyPDamage, generator));
         }
         for(int i = 0; i < pbCount; i++){
             playerbl.add(new PlayerBullet(bulletImg,m, 1,7));

@@ -22,8 +22,10 @@ public class CollisionDetector {
         for(int i =0; i < el.size(); i++){
             Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
             Rectangle otherBBox = new Rectangle(el.get(i).getX(), el.get(i).getY(),el.get(i).getWidth(), el.get(i).getWidth());
-            if(pbox.intersects(otherBBox)) 
-                el.get(i).update(1);
+            if(pbox.intersects(otherBBox)){
+                el.get(i).update(1); // update the enemy -> explosion
+                pp.reduceHealth(el.get(i).getDamage()); // update player plane' health
+            }    
         }
     }
     public void playerVSenemyBullet(PlayerPlane pp, Bullet b){

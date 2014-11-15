@@ -17,7 +17,7 @@ import java.util.Observable;
 
 public class PlayerPlane implements Observer{
     Image img;
-    int x, y, speed, width, height;
+    int x, y, speed, width, height,health;
     boolean boom;
 
     PlayerPlane(Image img, int x, int y, int speed) {
@@ -28,6 +28,7 @@ public class PlayerPlane implements Observer{
          width = img.getWidth(null);
          height = img.getHeight(null);
          boom = false;
+         health = 100;
     }
     
     public int getX(){
@@ -54,6 +55,10 @@ public class PlayerPlane implements Observer{
         this.y = b;
     }
 
+     public void reduceHealth(int d){
+         this.health -= d;
+     }
+     
      public void draw(Graphics g, ImageObserver obs){
         g.drawImage(img, x, y, obs);
     
@@ -92,11 +97,11 @@ public class PlayerPlane implements Observer{
                     default:
                   if(e.getKeyChar() == ' ') {
                       
-                      for(int h = 0, i =-1; h < 4|| i <2; h++){
+                      for(int h = 0, i =-1; h < 3|| i <2; h++){
                            if(!(AirstrikeGameWorld.playerbl.get(h)).getShow()){
-                               (AirstrikeGameWorld.playerbl.get(h)).setX(this.x + i);
+                               (AirstrikeGameWorld.playerbl.get(h)).setX(this.x + i+10);
                                (AirstrikeGameWorld.playerbl.get(h)).setShow(true);
-                                i++;
+                                i += 10;
                                 System.out.println("Fire");
                            }
                       }
