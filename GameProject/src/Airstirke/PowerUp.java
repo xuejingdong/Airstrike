@@ -13,48 +13,42 @@ import java.awt.image.ImageObserver;
 import java.util.Random;
 import java.awt.Rectangle;
 
-public class PowerUp {
-    int x, y, width, height;
-    Image img;
+public class PowerUp extends GameObject {
     int powerType;
+    boolean collected;
+    boolean show;
     
     PowerUp(Image img, int x, int y, int speed, int powerType){
-        this.img = img;
-        this.x = x;
-        this.y = y;
-        this.width = img.getWidth(null);
-        this.height = img.getHeight(null);
+        super(img,x,y,speed);
         this.powerType = powerType;
-    }
-    public int getX(){
-        return this.x;
-    }
-    
-    public int getY(){
-        return this.y;
+        this.collected = false;
+        this.show = false;
     }
     
-    public int getWidth(){
-        return this.width;
-    }
-    
-    public int getHeight(){
-        return this.height;
-    }
-        
     public int getPowerType(){
         return this.powerType;
     }
     
-    public void setX(int a){
-        this.x = a;
+    public boolean getShow(){
+        return this.show;
     }
     
-     public void setY(int b){
-        this.y = b;
-     }
+    public void setCollected(boolean c){
+        this.collected = c;
+    }
+    
+    public void setShow(boolean s){
+        this.show = s;
+    }
+    
+    public void update(){
+        if(this.show && !this.collected)
+            y = y + speed;
+    }
+    
     public void draw(Graphics g, ImageObserver obs){
-        g.drawImage(img, x, y, obs);
+        if(show && !collected)
+            g.drawImage(img, x, y, obs);
     
     }
 }

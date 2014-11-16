@@ -16,16 +16,11 @@ import java.util.Random;
  *
  * @author Dong
  */
-public class Island {
-    Image img;
-    int x, y, speed;
+public class Island extends GameObject{
     Random gen;
 
     public Island(Image img, int x, int y, int speed, Random gen) {
-        this.img = img;
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
+        super(img,x,y,speed);
         this.gen = gen;
     }
 

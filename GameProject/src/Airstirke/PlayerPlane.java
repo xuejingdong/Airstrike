@@ -15,46 +15,17 @@ import java.awt.image.ImageObserver;
 import java.util.Observer;
 import java.util.Observable;
 
-public class PlayerPlane implements Observer{
-    Image img;
-    int x, y, speed, width, height,health;
+public class PlayerPlane extends GameObject implements Observer{
+   
+    int health;
     boolean boom;
 
     PlayerPlane(Image img, int x, int y, int speed) {
-         this.img = img;
-         this.x = x;
-         this.y = y;
-         this.speed = speed;
-         width = img.getWidth(null);
-         height = img.getHeight(null);
+         super(img,x,y,speed);
          boom = false;
          health = 100;
     }
-    
-    public int getX(){
-        return this.x;
-    }
-    
-    public int getY(){
-        return this.y;
-    }
-    
-    public int getWidth(){
-        return this.width;
-    }
-    
-    public int getHeight(){
-        return this.height;
-    }
-    
-    public void setX(int a){
-        this.x = a;
-    }
-    
-     public void setY(int b){
-        this.y = b;
-    }
-
+  
      public void reduceHealth(int d){
          this.health -= d;
      }
@@ -63,16 +34,7 @@ public class PlayerPlane implements Observer{
         g.drawImage(img, x, y, obs);
     
     }
-        
-   /* public boolean collision(int x, int y, int w, int h) {
-        bbox = new Rectangle(this.x, this.y, this.width, this.height);
-        Rectangle otherBBox = new Rectangle (x,y,w,h);
-        if(this.bbox.intersects(otherBBox)) { 
-             return true;
-        }
-        return false;
-    }*/
-      
+  
         public void update(Observable obj, Object arg) {
             GameEvents ge = (GameEvents) arg;
             if(ge.type == 1) {
