@@ -13,16 +13,16 @@ import java.awt.image.ImageObserver;
 import java.util.Random;
 
 public class GameObject {
-    int x, y, width, height, speed;
+    int x, y, width, height, Yspeed; 
     Image img;
     
-    public GameObject(Image img, int x, int y, int speed){
+    public GameObject(Image img, int x, int y, int Yspeed){
         this.img = img;
         this.x = x;
         this.y = y;
         this.width = img.getWidth(null);
         this.height = img.getHeight(null);
-        this.speed = speed;
+        this.Yspeed = Yspeed;
         
     }
     public int getX(){

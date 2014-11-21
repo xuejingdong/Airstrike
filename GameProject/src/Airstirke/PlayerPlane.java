@@ -12,61 +12,73 @@ import java.awt.*;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.ImageObserver;
+import java.io.File;
 import java.util.Observer;
 import java.util.Observable;
+import javax.imageio.ImageIO;
 
 public class PlayerPlane extends GameObject implements Observer{
    
-    int health;
+    int health,damage;
     boolean boom;
+    Image bulletImg;
 
-    PlayerPlane(Image img, int x, int y, int speed) {
-         super(img,x,y,speed);
+    PlayerPlane(Image img, int damge,int x, int y, int Yspeed) {
+         super(img,x,y,Yspeed);
          boom = false;
          health = 100;
+         damage = damage;
+         try{
+             bulletImg = ImageIO.read(new File("Resources/bullet.png"));
+         }
+         catch (Exception e) {
+            System.out.print("No resources are found");
+        }
     }
-  
+     public int getDamage(){
+         return this.damage;
+     }
+     
      public void reduceHealth(int d){
          this.health -= d;
      }
      
      public void draw(Graphics g, ImageObserver obs){
         g.drawImage(img, x, y, obs);
-    
     }
-  
-        public void update(Observable obj, Object arg) {
-            GameEvents ge = (GameEvents) arg;
-            if(ge.type == 1) {
-                KeyEvent e = (KeyEvent) ge.event;
-                switch (e.getKeyCode()) {    
-                    case KeyEvent.VK_LEFT:
-                        if(x > 0)
-                            x -= speed;
-	        	break; 
-                    case KeyEvent.VK_RIGHT:
-                        if(x < 570)
-                            x += speed;
-	        	break;
-                    case KeyEvent.VK_UP:
-                        if(y > 0)
-                            y -= speed;
-	        	break; 
-                    case KeyEvent.VK_DOWN:
-                        if(y < 400)
-                            y += speed;
-	        	break;
-                    default:
-                  if(e.getKeyChar() == ' ') {
-                      
-                      for(int h = 0, i =-1; h < 3|| i <2; h++){
-                           if(!(AirstrikeGameWorld.playerbl.get(h)).getShow()){
-                               (AirstrikeGameWorld.playerbl.get(h)).setX(this.x + i+10);
-                               (AirstrikeGameWorld.playerbl.get(h)).setShow(true);
-                                i += 10;
-                                System.out.println("Fire");
-                           }
-                      }
+    
+     private  void fire(){
+         for(int h = 0, i =-1; h < 1;i++, h++){
+             Bullet playerb = new Bullet(bulletImg,x+width/2+i,y,2,0,-3);
+             GameWorld.playerbl.add(playerb);
+             System.out.println("fire!");
+         }   
+     }
+    
+     public void update(Observable obj, Object arg) {
+         GameEvents ge = (GameEvents) arg;
+         if(ge.type == 1) {
+             KeyEvent e = (KeyEvent) ge.event;
+             switch (e.getKeyCode()) {    
+                case KeyEvent.VK_LEFT:
+                    if(x > 0)
+                        x -= Yspeed;
+	      	break; 
+                case KeyEvent.VK_RIGHT:
+                     if(x < 570)
+                         x += Yspeed;
+                break;
+                case KeyEvent.VK_UP:
+                     if(y > 0)
+                         y -= Yspeed;
+        	break; 
+                case KeyEvent.VK_DOWN:
+                     if(y < 400)
+                         y += Yspeed;
+	       	break;
+             default:
+            if(e.getKeyChar() == ' ') {
+                    fire(); 
                   }
             else if(ge.type == 2) {
                 String msg = (String)ge.event;

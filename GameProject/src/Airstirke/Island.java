@@ -25,7 +25,7 @@ public class Island extends GameObject{
     }
 
      public void update() {
-         y += speed;
+         y += Yspeed;
          if (y >= 480) {
              y = -100;
              x = Math.abs(gen.nextInt() % (640 - 30));

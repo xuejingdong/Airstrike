@@ -18,18 +18,37 @@ public class CollisionDetector {
         //if(pbox.intersects(pbox2))
            
     }
-    public void playerVSenemy(PlayerPlane pp, ArrayList<EnemyPlane> el){
-        for(int i =0; i < el.size(); i++){
-            Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
-            Rectangle otherBBox = new Rectangle(el.get(i).getX(), el.get(i).getY(),el.get(i).getWidth(), el.get(i).getWidth());
+    public void playerVSenemy(PlayerPlane pp){
+        EnemyPlane enemy;
+        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
+        for(int i =0; i < GameWorld.enemyl.size(); i++){
+            enemy = GameWorld.enemyl.get(i);
+            Rectangle otherBBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getWidth());
             if(pbox.intersects(otherBBox)){//check intersection
-                el.get(i).update(1); // update the enemy -> explosion
-                pp.reduceHealth(el.get(i).getDamage()); // update player plane' health
+                enemy.reduceHealth(pp.getDamage()); // update the enemy -> explosion
+                pp.reduceHealth(enemy.getDamage()); // update player plane' health
             }    
         }
     }
-    public void playerVSenemyBullet(PlayerPlane pp, Bullet b){
+    public void playerVSenemyBullet(PlayerPlane pp, ArrayList<Bullet> eb){
         
+    }
+    public void playerBulletVSenemyPlane(){
+        Bullet bullet;
+        EnemyPlane enemy;
+        for(int i  = 0; i < GameWorld.playerbl.size(); i++){
+            bullet = GameWorld.playerbl.get(i);
+            Rectangle bulletBox = new Rectangle(bullet.getX(),bullet.getY(),bullet.getWidth(),bullet.getHeight());
+            for(int j = 0; j < GameWorld.enemyl.size(); j++){
+                enemy = GameWorld.enemyl.get(j);
+                Rectangle enemyBox = new Rectangle(enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
+                //check collision, 
+                if(bulletBox.intersects(enemyBox)){
+                    GameWorld.playerbl.remove(bullet);
+                    enemy.reduceHealth(bullet.getDamge());
+                }
+            }
+        }
     }
     public void playerVSpowerup(PlayerPlane pp, PowerUp pu){
         Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());

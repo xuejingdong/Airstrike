@@ -14,13 +14,14 @@ import java.util.Random;
 import java.awt.Rectangle;
 
 public class Bullet extends GameObject {
-    int damage;
+    int damage,Xspeed;
     boolean show;
     
-    public Bullet(Image img, int x, int y, int damage, int speed){
-        super(img,x,y,speed);
+    public Bullet(Image img, int x, int y, int damage, int Xspeed,int Yspeed){
+        super(img,x,y,Yspeed);
         this.damage = damage;
-        this.show = false;
+        this.Xspeed = Xspeed;
+        this.show = true;
     }
          
     public int getDamge(){
@@ -31,6 +32,15 @@ public class Bullet extends GameObject {
     }
     public void setShow(boolean s){
         this.show = s;
+    }
+    public void update(){
+        if(y < 430 && y > 0 && x > 0 && x < 600 && show){
+            x = x + Xspeed;
+            y = y + Yspeed;
+        }
+        else{
+            this.show = false;
+        }
     }
      //update, if collision happen, make the bullet disappear?
      //if no collsion happen, fly out of the frame, and then?

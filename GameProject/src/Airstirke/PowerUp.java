@@ -43,7 +43,7 @@ public class PowerUp extends GameObject {
     
     public void update(){
         if(this.show && !this.collected)
-            y = y + speed;
+            y = y + Yspeed;
     }
     
     public void draw(Graphics g, ImageObserver obs){

@@ -17,15 +17,15 @@ import java.util.Random;
  * @author Dong
  */
 public class EnemyPlane extends GameObject{
-    int damage;
+    int damage,health;
     Random gen;
     boolean show;
     Random generator = new Random();
     GameEvents gameEvents;
    
-    EnemyPlane(Image img, int speed, int damage, Random gen){ 
-       super(img, Math.abs(gen.nextInt() % (600 - 30)),-20,speed);
-       this.speed = speed;
+    EnemyPlane(Image img,int health, int Yspeed, int damage, Random gen){ 
+       super(img, Math.abs(gen.nextInt() % (600 - 30)),-20,Yspeed);
+       this.health = health;
        this.gen = gen;
        this.show = true;
        this.damage = damage;
@@ -39,17 +39,22 @@ public class EnemyPlane extends GameObject{
      public void setDamage(int d){
          this.damage = d;
      }
+     
+     public void reduceHealth(int h){
+         this.health = health - h;
+     }
     public void update() {
-         y += speed;
+         y += Yspeed;
          if(y > 430)
             this.reset();
+         if(this.health < 0)
+             isDie();
     }
-    public void update(int dum){
-        show = false;
-        //gameEvents.setValue("Explosion");
-        //gameEvents.setValue("");
-        this.reset();
-         show = true;
+   
+    //call explosion, and remove itself from the enemyPlane array
+    public void isDie(){
+        if(this.health < 0)
+            GameWorld.enemyl.remove(this);
     }
     public void reset() {
          this.x = Math.abs(generator.nextInt() % (600 - 30));
