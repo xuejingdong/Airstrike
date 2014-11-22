@@ -13,8 +13,8 @@ import java.awt.image.ImageObserver;
 import java.util.Random;
 
 public class GameObject {
-    int x, y, width, height, Yspeed; 
-    Image img;
+    protected int x, y, width, height, Yspeed; 
+    protected Image img;
     
     public GameObject(Image img, int x, int y, int Yspeed){
         this.img = img;

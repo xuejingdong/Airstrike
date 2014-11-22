@@ -17,7 +17,7 @@ import java.util.Random;
  * @author Dong
  */
 public class Island extends GameObject{
-    Random gen;
+    protected Random gen;
 
     public Island(Image img, int x, int y, int speed, Random gen) {
         super(img,x,y,speed);

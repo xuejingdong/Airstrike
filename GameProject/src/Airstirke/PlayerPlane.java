@@ -49,6 +49,7 @@ public class PlayerPlane extends GameObject implements Observer{
     
      private  void fire(){
          for(int h = 0, i =-1; h < 1;i++, h++){
+             //bullet damage: 2
              Bullet playerb = new Bullet(bulletImg,x+width/2+i,y,2,0,-3);
              GameWorld.playerbl.add(playerb);
              System.out.println("fire!");

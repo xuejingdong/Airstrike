@@ -13,20 +13,22 @@ import java.util.ArrayList;
 public class CollisionDetector {
     public void playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
         //check if there is intersection between 2 plane
-        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
-        Rectangle pbox2 = new Rectangle(pp2.getX(), pp2.getY(), pp2.getWidth(), pp2.getWidth());
+        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getHeight());
+        Rectangle pbox2 = new Rectangle(pp2.getX(), pp2.getY(), pp2.getWidth(), pp2.getHeight());
         //if(pbox.intersects(pbox2))
            
     }
     public void playerVSenemy(PlayerPlane pp){
         EnemyPlane enemy;
-        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
+        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getHeight());
         for(int i =0; i < GameWorld.enemyl.size(); i++){
             enemy = GameWorld.enemyl.get(i);
-            Rectangle otherBBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getWidth());
-            if(pbox.intersects(otherBBox)){//check intersection
-                enemy.reduceHealth(pp.getDamage()); // update the enemy -> explosion
+            Rectangle eBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getHeight());
+            if(pbox.intersects(eBox)){//check intersection
+                //enemy.reduceHealth(pp.getDamage()); // update the enemy -> explosion
+                enemy.isDied();
                 pp.reduceHealth(enemy.getDamage()); // update player plane' health
+                System.out.println("playerVSenemy collision");
             }    
         }
     }
@@ -51,8 +53,8 @@ public class CollisionDetector {
         }
     }
     public void playerVSpowerup(PlayerPlane pp, PowerUp pu){
-        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getWidth());
-        Rectangle powerbox = new Rectangle(pu.getX(), pu.getY(), pu.getWidth(), pu.getWidth());
+        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getHeight());
+        Rectangle powerbox = new Rectangle(pu.getX(), pu.getY(), pu.getWidth(), pu.getHeight());
         if(pbox.intersects(powerbox)){
             
         }

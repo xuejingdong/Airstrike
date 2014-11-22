@@ -23,7 +23,7 @@ public class EnemyPlane extends GameObject{
     Random generator = new Random();
     GameEvents gameEvents;
    
-    EnemyPlane(Image img,int health, int Yspeed, int damage, Random gen){ 
+    EnemyPlane(Image img,int health, int damage,int Yspeed,Random gen){ 
        super(img, Math.abs(gen.nextInt() % (600 - 30)),-20,Yspeed);
        this.health = health;
        this.gen = gen;
@@ -40,21 +40,21 @@ public class EnemyPlane extends GameObject{
          this.damage = d;
      }
      
-     public void reduceHealth(int h){
-         this.health = health - h;
+     public void reduceHealth(int d){
+         this.health -= d;
      }
     public void update() {
          y += Yspeed;
          if(y > 430)
             this.reset();
-         if(this.health < 0)
-             isDie();
+         if(this.health <= 0)
+             isDied();
     }
    
     //call explosion, and remove itself from the enemyPlane array
-    public void isDie(){
-        if(this.health < 0)
-            GameWorld.enemyl.remove(this);
+    public void isDied(){
+        GameWorld.enemyl.remove(this);
+        System.out.println("enemy explosion");
     }
     public void reset() {
          this.x = Math.abs(generator.nextInt() % (600 - 30));

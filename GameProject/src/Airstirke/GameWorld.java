@@ -13,7 +13,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.net.URL;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
@@ -25,6 +24,8 @@ public class GameWorld extends JApplet implements Runnable{
     private Thread thread;
     Image sea;
     Image myPlane;
+    static Image [] smallExp;
+    static Image [] bigExp;
     private BufferedImage bimg;
     Graphics2D g2;
     int speed = 1, move = 0;
@@ -57,14 +58,29 @@ public class GameWorld extends JApplet implements Runnable{
         myPlane = ImageIO.read(new File("Resources/myplane_1.png"));
         enemyImg = ImageIO.read(new File("Resources/enemy1_1.png"));
         bulletImg = ImageIO.read(new File("Resources/bullet.png"));
-        
+        //get small explosion image array
+        /*smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
+        smallExp[1] = ImageIO.read(new File("Resources/explosion1_2.png"));
+        smallExp[2] = ImageIO.read(new File("Resources/explosion1_3.png"));
+        smallExp[3] = ImageIO.read(new File("Resources/explosion1_4.png"));
+        smallExp[4] = ImageIO.read(new File("Resources/explosion1_5.png"));
+        smallExp[5] = ImageIO.read(new File("Resources/explosion1_6.png"));
+        //get big explosion image array
+        bigExp[0] = ImageIO.read(new File("Resources/explosion2_1.png"));
+        bigExp[1] = ImageIO.read(new File("Resources/explosion2_2.png"));
+        bigExp[2] = ImageIO.read(new File("Resources/explosion2_3.png"));
+        bigExp[3] = ImageIO.read(new File("Resources/explosion2_4.png"));
+        bigExp[4] = ImageIO.read(new File("Resources/explosion2_5.png"));
+        bigExp[5] = ImageIO.read(new File("Resources/explosion2_6.png"));
+        bigExp[6] = ImageIO.read(new File("Resources/explosion2_7.png"));
+        */
         I1 = new Island(island1, 100, 100, speed, generator);
         I2 = new Island(island2, 200, 400, speed, generator);
         I3 = new Island(island3, 300, 200, speed, generator);
-        m = new PlayerPlane(myPlane,2, 300, 360, 5);
+        m = new PlayerPlane(myPlane,playerPlaneDamage, 300, 360, 5);
         
         for(int i = 0; i < eneCount; i++){
-            enemyl.add( new EnemyPlane(enemyImg,playerPlaneDamage, 2,enemyPDamage, generator));
+            enemyl.add( new EnemyPlane(enemyImg,2,enemyPDamage,2,generator));
         }
         
         gameEvents = new GameEvents();
