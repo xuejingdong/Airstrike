@@ -54,7 +54,9 @@ public class EnemyPlane extends GameObject{
     //call explosion, and remove itself from the enemyPlane array
     public void isDied(){
         GameWorld.enemyl.remove(this);
+        GameWorld.explosions.add(new Explosion(x,y,1));
         System.out.println("enemy explosion");
+    
     }
     public void reset() {
          this.x = Math.abs(generator.nextInt() % (600 - 30));

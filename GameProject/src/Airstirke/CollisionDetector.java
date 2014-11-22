@@ -25,8 +25,7 @@ public class CollisionDetector {
             enemy = GameWorld.enemyl.get(i);
             Rectangle eBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getHeight());
             if(pbox.intersects(eBox)){//check intersection
-                //enemy.reduceHealth(pp.getDamage()); // update the enemy -> explosion
-                enemy.isDied();
+                enemy.isDied();// update the enemy -> explosion
                 pp.reduceHealth(enemy.getDamage()); // update player plane' health
                 System.out.println("playerVSenemy collision");
             }    
@@ -46,8 +45,8 @@ public class CollisionDetector {
                 Rectangle enemyBox = new Rectangle(enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
                 //check collision, 
                 if(bulletBox.intersects(enemyBox)){
-                    GameWorld.playerbl.remove(bullet);
-                    enemy.reduceHealth(bullet.getDamge());
+                    GameWorld.playerbl.remove(bullet);//remove bullet 
+                    enemy.reduceHealth(bullet.getDamge());//reduce enemy health
                 }
             }
         }

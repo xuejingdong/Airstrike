@@ -24,8 +24,8 @@ public class GameWorld extends JApplet implements Runnable{
     private Thread thread;
     Image sea;
     Image myPlane;
-    static Image [] smallExp;
-    static Image [] bigExp;
+    static Image [] smallExp = new Image[6];
+    static Image [] bigExp = new Image[7];
     private BufferedImage bimg;
     Graphics2D g2;
     int speed = 1, move = 0;
@@ -35,31 +35,39 @@ public class GameWorld extends JApplet implements Runnable{
     int w = 640, h = 480; // fixed size window game 
     EnemyPlane e1;
     GameEvents gameEvents;
-    Bullet bullet;
     int eneCount = 10;
-    int enemyPDamage = 5;
+    final int BLUE_ENEMY_DAMAGE = 1;
+    final int YELLOW_ENEMY_DAMAGE = 4;
+    final int WHITE_ENEMY_DAMAGE = 8;
+    final int BLUE_ENEMY_HEALTH = 2;
+    final int YELLOW_ENEMY_HEALTH = 4;
+    final int WHITE_ENEMY_HEALTH = 6;
     int playerPlaneDamage = 10;
+    int frameCounter = 0;
     CollisionDetector CD = new CollisionDetector();
     static ArrayList<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
     static ArrayList<Bullet> playerbl = new ArrayList<Bullet>();
     static ArrayList<Bullet> enemybl = new ArrayList<Bullet>();
+    static ArrayList<Explosion> explosions = new ArrayList<Explosion>();
        
     public void init() {
         setFocusable(true);
         setBackground(Color.white);
-        Image island1, island2, island3, enemyImg, bulletImg;
+        Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, bulletImg;
 
         try {
-        //sea = getSprite("Resources/water.png");
+       
         sea = ImageIO.read(new File("Resources/water.png"));
         island1 = ImageIO.read(new File("Resources/island1.png"));
         island2 = ImageIO.read(new File("Resources/island2.png"));
         island3 = ImageIO.read(new File("Resources/island3.png"));
         myPlane = ImageIO.read(new File("Resources/myplane_1.png"));
-        enemyImg = ImageIO.read(new File("Resources/enemy1_1.png"));
+        blue_enemyImg = ImageIO.read(new File("Resources/enemy1_1.png"));
+        yellow_enemyImg = ImageIO.read(new File("Resources/enemy2_1.png"));
+        white_enemyImg = ImageIO.read(new File("Resources/enemy3_1.png"));
         bulletImg = ImageIO.read(new File("Resources/bullet.png"));
         //get small explosion image array
-        /*smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
+        smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
         smallExp[1] = ImageIO.read(new File("Resources/explosion1_2.png"));
         smallExp[2] = ImageIO.read(new File("Resources/explosion1_3.png"));
         smallExp[3] = ImageIO.read(new File("Resources/explosion1_4.png"));
@@ -73,14 +81,14 @@ public class GameWorld extends JApplet implements Runnable{
         bigExp[4] = ImageIO.read(new File("Resources/explosion2_5.png"));
         bigExp[5] = ImageIO.read(new File("Resources/explosion2_6.png"));
         bigExp[6] = ImageIO.read(new File("Resources/explosion2_7.png"));
-        */
+        
         I1 = new Island(island1, 100, 100, speed, generator);
         I2 = new Island(island2, 200, 400, speed, generator);
         I3 = new Island(island3, 300, 200, speed, generator);
         m = new PlayerPlane(myPlane,playerPlaneDamage, 300, 360, 5);
         
         for(int i = 0; i < eneCount; i++){
-            enemyl.add( new EnemyPlane(enemyImg,2,enemyPDamage,2,generator));
+            enemyl.add( new EnemyPlane(blue_enemyImg,BLUE_ENEMY_HEALTH,BLUE_ENEMY_DAMAGE,2,generator));
         }
         
         gameEvents = new GameEvents();
@@ -92,7 +100,10 @@ public class GameWorld extends JApplet implements Runnable{
             System.out.print("No resources are found");
         }
     }
-    
+    //function added to control what kind of enemy plane is showed
+    public void timelineControl(){
+ 
+    }
     public void drawBackGroundWithTileImage() {
         int TileWidth = sea.getWidth(this);
         int TileHeight = sea.getHeight(this);
@@ -115,29 +126,40 @@ public class GameWorld extends JApplet implements Runnable{
             I1.update();
             I2.update();
             I3.update();
-            //e1.update();
+            //check collision
             CD.playerVSenemy(m);
             CD.playerBulletVSenemyPlane();
+            
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).update();
             }
             for(int i = 0; i < playerbl.size(); i++){
                 playerbl.get(i).update();
             }
-            //bullet.update();
-            
+            for(int i = 0; i< explosions.size(); i++){
+                if(explosions.get(i).getFinished())
+                    explosions.remove(explosions.get(i));
+                else
+                    explosions.get(i).update();
+            }
             drawBackGroundWithTileImage();
             I1.draw(g2,this);
             I2.draw(g2,this);
             I3.draw(g2,this);
             m.draw(g2,this);
-            //e1.draw(g2, this);
+            
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).draw(g2,this);
             }
             for(int i = 0; i < playerbl.size(); i++){
                 playerbl.get(i).draw(g2,this);
             }
+            for(int i = 0; i < explosions.size(); i++){
+                explosions.get(i).draw(g2, this);
+            }
+            
+            //increment frameCounter
+            frameCounter ++;
             
     }
 
