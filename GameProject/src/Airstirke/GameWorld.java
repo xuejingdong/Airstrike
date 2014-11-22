@@ -24,6 +24,8 @@ public class GameWorld extends JApplet implements Runnable{
     private Thread thread;
     Image sea;
     Image myPlane;
+    Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, bulletImg;
+    Image enemyBulletSmall,enemyBulletBig; 
     static Image [] smallExp = new Image[6];
     static Image [] bigExp = new Image[7];
     private BufferedImage bimg;
@@ -33,7 +35,6 @@ public class GameWorld extends JApplet implements Runnable{
     Island I1, I2, I3;
     PlayerPlane m;
     int w = 640, h = 480; // fixed size window game 
-    EnemyPlane e1;
     GameEvents gameEvents;
     int eneCount = 10;
     final int BLUE_ENEMY_DAMAGE = 1;
@@ -43,7 +44,8 @@ public class GameWorld extends JApplet implements Runnable{
     final int YELLOW_ENEMY_HEALTH = 4;
     final int WHITE_ENEMY_HEALTH = 6;
     int playerPlaneDamage = 10;
-    int frameCounter = 0;
+    int playerBulletDamage = 4;
+    int frameCount = 0;
     CollisionDetector CD = new CollisionDetector();
     static ArrayList<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
     static ArrayList<Bullet> playerbl = new ArrayList<Bullet>();
@@ -53,8 +55,6 @@ public class GameWorld extends JApplet implements Runnable{
     public void init() {
         setFocusable(true);
         setBackground(Color.white);
-        Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, bulletImg;
-
         try {
        
         sea = ImageIO.read(new File("Resources/water.png"));
@@ -66,6 +66,8 @@ public class GameWorld extends JApplet implements Runnable{
         yellow_enemyImg = ImageIO.read(new File("Resources/enemy2_1.png"));
         white_enemyImg = ImageIO.read(new File("Resources/enemy3_1.png"));
         bulletImg = ImageIO.read(new File("Resources/bullet.png"));
+        enemyBulletSmall = ImageIO.read(new File("Resources/enemybullet1.png"));
+        enemyBulletBig = ImageIO.read(new File("Resources/enemybullet1.png"));
         //get small explosion image array
         smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
         smallExp[1] = ImageIO.read(new File("Resources/explosion1_2.png"));
@@ -102,7 +104,16 @@ public class GameWorld extends JApplet implements Runnable{
     }
     //function added to control what kind of enemy plane is showed
     public void timelineControl(){
- 
+        if(frameCount == 300){
+           for(int i = 0; i < eneCount; i++){
+                enemyl.add( new EnemyPlane(yellow_enemyImg,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,2,generator));
+           }
+        }
+        if(frameCount == 600){
+            for(int i = 0; i < eneCount; i++){
+                enemyl.add( new EnemyPlane(white_enemyImg,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,2,generator));
+           }
+        }
     }
     public void drawBackGroundWithTileImage() {
         int TileWidth = sea.getWidth(this);
@@ -129,12 +140,15 @@ public class GameWorld extends JApplet implements Runnable{
             //check collision
             CD.playerVSenemy(m);
             CD.playerBulletVSenemyPlane();
-            
+            this.timelineControl();
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).update();
             }
             for(int i = 0; i < playerbl.size(); i++){
-                playerbl.get(i).update();
+                if(playerbl.get(i).getShow())
+                    playerbl.get(i).update();
+                else
+                    playerbl.remove(playerbl.get(i));
             }
             for(int i = 0; i< explosions.size(); i++){
                 if(explosions.get(i).getFinished())
@@ -159,7 +173,7 @@ public class GameWorld extends JApplet implements Runnable{
             }
             
             //increment frameCounter
-            frameCounter ++;
+            frameCount ++;
             
     }
 

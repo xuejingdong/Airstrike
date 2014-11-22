@@ -45,7 +45,7 @@ public class CollisionDetector {
                 Rectangle enemyBox = new Rectangle(enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
                 //check collision, 
                 if(bulletBox.intersects(enemyBox)){
-                    GameWorld.playerbl.remove(bullet);//remove bullet 
+                    GameWorld.playerbl.remove(bullet);//remove bullet from list 
                     enemy.reduceHealth(bullet.getDamge());//reduce enemy health
                 }
             }

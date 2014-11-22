@@ -22,6 +22,8 @@ public class EnemyPlane extends GameObject{
     boolean show;
     Random generator = new Random();
     GameEvents gameEvents;
+    boolean canShoot;
+    int shootFrequent;
    
     EnemyPlane(Image img,int health, int damage,int Yspeed,Random gen){ 
        super(img, Math.abs(gen.nextInt() % (600 - 30)),-20,Yspeed);

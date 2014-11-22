@@ -19,17 +19,20 @@ import javax.imageio.ImageIO;
 
 public class PlayerPlane extends GameObject implements Observer{
    
-    int health,damage;
+    int health,damage,bulletDamage;
     boolean boom;
-    Image bulletImg;
+    Image bulletImg, leftBulletImg, rightBulletImg;
 
     PlayerPlane(Image img, int damge,int x, int y, int Yspeed) {
          super(img,x,y,Yspeed);
          boom = false;
          health = 100;
          damage = damage;
+         bulletDamage = 4;
          try{
              bulletImg = ImageIO.read(new File("Resources/bullet.png"));
+             leftBulletImg = ImageIO.read(new File("Resources/bulletLeft.png"));
+             rightBulletImg = ImageIO.read(new File("Resources/bulletRight.png"));
          }
          catch (Exception e) {
             System.out.print("No resources are found");
@@ -48,12 +51,15 @@ public class PlayerPlane extends GameObject implements Observer{
     }
     
      private  void fire(){
-         for(int h = 0, i =-1; h < 1;i++, h++){
-             //bullet damage: 2
-             Bullet playerb = new Bullet(bulletImg,x+width/2+i,y,2,0,-3);
-             GameWorld.playerbl.add(playerb);
-             System.out.println("fire!");
-         }   
+        Bullet playerb;
+        playerb = new Bullet(bulletImg,x+width/2,y,bulletDamage,-1,-3);
+        GameWorld.playerbl.add(playerb);
+        playerb = new Bullet(bulletImg,x+width/2,y,bulletDamage,0,-3);
+        GameWorld.playerbl.add(playerb);
+        playerb = new Bullet(bulletImg,x+width/2,y,bulletDamage,1,-3);
+        GameWorld.playerbl.add(playerb);
+        System.out.println("fire!");
+           
      }
     
      public void update(Observable obj, Object arg) {

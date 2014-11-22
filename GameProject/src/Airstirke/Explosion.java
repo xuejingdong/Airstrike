@@ -15,14 +15,14 @@ import java.awt.image.ImageObserver;
 public class Explosion{
     private Image [] img;
     private int x,y;
-    private int counter;
+    private int count;
     private boolean finished;
-    private int type;
+    private int type;//1 for small explosions, the other number for big ones
     
     public Explosion( int x, int y, int t){
         this.x = x;
         this.y = y;
-        this.counter = -1;
+        this.count = -1;
         this. finished = false;
         if(type == 1)
             this.img = GameWorld.smallExp;
@@ -34,16 +34,20 @@ public class Explosion{
         return this.finished;
     }
     public void update(){
-        if(counter < img.length-1)
-            counter ++;
-        else{
+        if(count < img.length-2){
+            //System.out.println(img.length-2);
+            //System.out.println(count);
+            count ++;
+            //System.out.println(count);
+        }else{
             finished = true;
         }
     }
     
     public void draw(Graphics g,ImageObserver obs) {
          if (!finished) {
-             g.drawImage(img[counter], x, y, obs);
+             g.drawImage(img[count], x, y, obs);
+             //System.out.print(count);
          }
      }
 }
