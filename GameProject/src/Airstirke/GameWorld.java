@@ -49,9 +49,9 @@ public class GameWorld extends JApplet implements Runnable{
     int playerBulletDamage = 4;
     int frameCount = 0;
     Player player1,player2;
-    CollisionDetector CD = new CollisionDetector();
+    CollisionDetector CD;
+    SoundPlayer sp;
     static ArrayList<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
-    static ArrayList<Bullet> playerbl = new ArrayList<Bullet>();
     static ArrayList<Bullet> enemybl = new ArrayList<Bullet>();
     static ArrayList<Explosion> explosions = new ArrayList<Explosion>();
        
@@ -90,9 +90,9 @@ public class GameWorld extends JApplet implements Runnable{
         I1 = new Island(island1, 100, 100, speed, generator);
         I2 = new Island(island2, 200, 400, speed, generator);
         I3 = new Island(island3, 300, 200, speed, generator);
-        //m = new PlayerPlane(myPlane,playerPlaneDamage, 300, 360, 5,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_SPACE);
-        player1 = new Player(1,3,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
-        player2 = new Player(3,3,KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
+        
+        player2 = new Player(1,3,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
+        player1 = new Player(3,3,KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         for(int i = 0; i < eneCount; i++){
             enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
         }
@@ -102,6 +102,9 @@ public class GameWorld extends JApplet implements Runnable{
         gameEvents.addObserver(player2.getPlane());
         KeyControl key = new KeyControl(gameEvents);
         addKeyListener(key);
+        sp = new SoundPlayer(1,"Resources/background.wav");
+        CD = new CollisionDetector(gameEvents);
+        
         }
         catch (Exception e) {
             System.out.print("No resources are found");

@@ -19,15 +19,12 @@ public class Explosion{
     private boolean finished;
     private int type;//1 for small explosions, the other number for big ones
     
-    public Explosion( int x, int y, int t){
+    public Explosion(int x, int y, Image[] img){
         this.x = x;
         this.y = y;
         this.count = 0;
         this. finished = false;
-        if(type == 1)
-            this.img = GameWorld.smallExp;
-        else 
-            this.img = GameWorld.bigExp;
+        this.img = img;
     }
     
     public boolean getFinished(){

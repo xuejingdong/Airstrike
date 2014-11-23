@@ -29,6 +29,8 @@ public class EnemyPlane extends GameObject{
     int bullet_type;//1: green &yellow; 2: white;
     int bullet_damage;
     Image bullet_image;
+    String soundFileName;
+    SoundPlayer sp;
    
     EnemyPlane(Image img,int enemyType,int health, int damage,int direction,int y, int Yspeed,Random gen,boolean canShoot){ 
        super(img, Math.abs(gen.nextInt() % (600 - 30)),y,Yspeed);
@@ -39,7 +41,9 @@ public class EnemyPlane extends GameObject{
        this.damage = damage;
        this.direction = direction;
        this.canShoot = canShoot;
-       int shootFreq = 0 ;
+       this.shootFreq = 0 ;
+       this.soundFileName = "Resources/snd_explosion1.wav";
+       this.sp = new SoundPlayer(2,soundFileName);
        if(enemyType == 1 || enemyType == 2){
            this.bullet_type = 1;
            this.bullet_damage = 2;
@@ -107,7 +111,8 @@ public class EnemyPlane extends GameObject{
     //call explosion, and remove itself from the enemyPlane array
     public void isDied(){
         GameWorld.enemyl.remove(this);
-        GameWorld.explosions.add(new Explosion(x,y,1));
+        GameWorld.explosions.add(new Explosion(x,y,GameWorld.smallExp));
+        sp.play();
         System.out.println("enemy explosion");
     }
     

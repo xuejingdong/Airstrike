@@ -11,7 +11,13 @@ package Airstirke;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 public class CollisionDetector {
-    GameEvents gameEvent = new GameEvents();
+    
+    GameEvents gameEvent;
+    
+    public CollisionDetector(GameEvents ge){
+        this.gameEvent = ge;
+    }
+    
     public void playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
         //check if there is intersection between 2 plane
         Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getHeight());
@@ -30,12 +36,12 @@ public class CollisionDetector {
             Rectangle eBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getHeight());
             if(p1_box.intersects(eBox)){//check intersection
                 enemy.isDied();// update the enemy -> explosion
-                p1.reduceHealth(enemy.getDamage()); // update player plane' health
-                System.out.println("playerVSenemy collision");
+                gameEvent.setValue("Collision"); // update player plane' health
+                
             }
             if(p2_box.intersects(eBox)){//check intersection
                 enemy.isDied();// update the enemy -> explosion
-                p2.reduceHealth(enemy.getDamage()); // update player plane' health
+                gameEvent.setValue("Collision"); // update player plane' health
                 System.out.println("playerVSenemy collision");
             }
             
