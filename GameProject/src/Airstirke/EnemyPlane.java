@@ -88,7 +88,6 @@ public class EnemyPlane extends GameObject{
         if(this.direction == 0){
             if(y > 430){
                 this.reset();
-                //show = false;
             }
             if(this.health <= 0)
                 isDied();
@@ -97,7 +96,6 @@ public class EnemyPlane extends GameObject{
         else{
             if(y < 0){
                this.reset();
-               //show = false;
            }
            if(this.health <= 0)
                isDied();
@@ -110,7 +108,6 @@ public class EnemyPlane extends GameObject{
     public void isDied(){
         GameWorld.enemyl.remove(this);
         GameWorld.explosions.add(new Explosion(x,y,1));
-        //show = false;
         System.out.println("enemy explosion");
     }
     
@@ -118,12 +115,10 @@ public class EnemyPlane extends GameObject{
         if(this.direction == 0){
             this.x = Math.abs(generator.nextInt() % (600 - 30));
             this.y = -10;
-            //show = true;
         }
         else{
             this.x = Math.abs(generator.nextInt() % (600 - 30));
             this.y = 480;
-            //show = true;
         }
      }
 

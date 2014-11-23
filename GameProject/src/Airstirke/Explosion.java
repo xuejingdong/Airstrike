@@ -36,9 +36,7 @@ public class Explosion{
     public void update(){
 
         if(count < img.length-1){
-            //System.out.println(count);
             count ++;
-            //System.out.println(count);
         }else{
             finished = true;
         }
@@ -46,9 +44,7 @@ public class Explosion{
     
     public void draw(Graphics g,ImageObserver obs) {
          if (!finished) {
-             System.out.println(count);
              g.drawImage(img[count-1], x, y, obs);
-             //System.out.print(count);
          }
      }
 }
