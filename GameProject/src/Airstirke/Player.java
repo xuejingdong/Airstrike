@@ -35,7 +35,7 @@ public class Player {
          catch (Exception e) {
             System.out.print("No resources are found");
         }
-        myPlane = new PlayerPlane(planeImg,playerPlaneDamage,250+10*ID,360,5,up,down,left,right,fire);
+        myPlane = new PlayerPlane(planeImg,playerPlaneDamage,100*ID,360,5,up,down,left,right,fire);
         
     }
     

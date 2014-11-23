@@ -19,34 +19,46 @@ public class CollisionDetector {
         //if(pbox.intersects(pbox2))
            
     }
-    public void playerVSenemy(PlayerPlane pp){
+    public void playerVSenemy(Player player1,Player player2){
         EnemyPlane enemy;
-        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getHeight());
+        PlayerPlane p1 = player1.getPlane();
+        PlayerPlane p2 = player2.getPlane();
+        Rectangle p1_box = new Rectangle(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
+        Rectangle p2_box = new Rectangle(p2.getX(), p2.getY(), p2.getWidth(), p2.getHeight());
         for(int i =0; i < GameWorld.enemyl.size(); i++){
             enemy = GameWorld.enemyl.get(i);
             Rectangle eBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getHeight());
-            if(pbox.intersects(eBox)){//check intersection
+            if(p1_box.intersects(eBox)){//check intersection
                 enemy.isDied();// update the enemy -> explosion
-                pp.reduceHealth(enemy.getDamage()); // update player plane' health
+                p1.reduceHealth(enemy.getDamage()); // update player plane' health
                 System.out.println("playerVSenemy collision");
-            }    
+            }
+            if(p2_box.intersects(eBox)){//check intersection
+                enemy.isDied();// update the enemy -> explosion
+                p2.reduceHealth(enemy.getDamage()); // update player plane' health
+                System.out.println("playerVSenemy collision");
+            }
+            
         }
     }
     public void playerVSenemyBullet(PlayerPlane pp, ArrayList<Bullet> eb){
         
     }
-    public void playerBulletVSenemyPlane(){
+    public void playerBulletVSenemyPlane(Player player1,Player player2){
         Bullet bullet;
         EnemyPlane enemy;
-        for(int i  = 0; i < GameWorld.playerbl.size(); i++){
-            bullet = GameWorld.playerbl.get(i);
+        ArrayList<Bullet> player1_bl = player1.getPlane().getBulletList();
+        ArrayList<Bullet> player2_bl = player2.getPlane().getBulletList();
+        for(int i  = 0; i < player1_bl.size(); i++){
+            bullet = player1_bl.get(i);
             Rectangle bulletBox = new Rectangle(bullet.getX(),bullet.getY(),bullet.getWidth(),bullet.getHeight());
             for(int j = 0; j < GameWorld.enemyl.size(); j++){
                 enemy = GameWorld.enemyl.get(j);
                 Rectangle enemyBox = new Rectangle(enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
                 //check collision, 
                 if(bulletBox.intersects(enemyBox)){
-                    GameWorld.playerbl.remove(bullet);//remove bullet from list 
+                    player1_bl.remove(bullet);//remove bullet from list 
+                    player1.addScore(enemy.getDamage());
                     enemy.reduceHealth(bullet.getDamge());//reduce enemy health
                 }
             }

@@ -25,7 +25,7 @@ public class GameWorld extends JApplet implements Runnable{
     Image sea;
     Image myPlane;
     Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, back_enemyImg;
-    static Image bulletImg,enemyBulletSmall,enemyBulletBig; 
+    static Image enemyBulletSmall,enemyBulletBig; 
     static Image [] smallExp = new Image[6];
     static Image [] bigExp = new Image[7];
     private BufferedImage bimg;
@@ -33,7 +33,7 @@ public class GameWorld extends JApplet implements Runnable{
     int speed = 1, move = 0;
     Random generator = new Random(1234567);
     Island I1, I2, I3;
-    PlayerPlane m;
+    //PlayerPlane m;
     int w = 640, h = 480; // fixed size window game 
     GameEvents gameEvents;
     int eneCount = 10;
@@ -48,6 +48,7 @@ public class GameWorld extends JApplet implements Runnable{
     int playerPlaneDamage = 10;
     int playerBulletDamage = 4;
     int frameCount = 0;
+    Player player1,player2;
     CollisionDetector CD = new CollisionDetector();
     static ArrayList<EnemyPlane> enemyl = new ArrayList<EnemyPlane>();
     static ArrayList<Bullet> playerbl = new ArrayList<Bullet>();
@@ -68,7 +69,6 @@ public class GameWorld extends JApplet implements Runnable{
         yellow_enemyImg = ImageIO.read(new File("Resources/enemy2_1.png"));
         white_enemyImg = ImageIO.read(new File("Resources/enemy3_1.png"));
         back_enemyImg = ImageIO.read(new File("Resources/enemy4_1.png"));
-        bulletImg = ImageIO.read(new File("Resources/bullet.png"));
         enemyBulletSmall = ImageIO.read(new File("Resources/enemybullet1.png"));
         enemyBulletBig = ImageIO.read(new File("Resources/enemybullet1.png"));
         //get small explosion image array
@@ -90,14 +90,16 @@ public class GameWorld extends JApplet implements Runnable{
         I1 = new Island(island1, 100, 100, speed, generator);
         I2 = new Island(island2, 200, 400, speed, generator);
         I3 = new Island(island3, 300, 200, speed, generator);
-        m = new PlayerPlane(myPlane,playerPlaneDamage, 300, 360, 5);
-        
+        //m = new PlayerPlane(myPlane,playerPlaneDamage, 300, 360, 5,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_SPACE);
+        player1 = new Player(1,3,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
+        player2 = new Player(3,3,KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         for(int i = 0; i < eneCount; i++){
             enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
         }
         
         gameEvents = new GameEvents();
-        gameEvents.addObserver(m);
+        gameEvents.addObserver(player1.getPlane());
+        gameEvents.addObserver(player2.getPlane());
         KeyControl key = new KeyControl(gameEvents);
         addKeyListener(key);
         }
@@ -147,8 +149,8 @@ public class GameWorld extends JApplet implements Runnable{
             I2.update();
             I3.update();
             //check collision
-            CD.playerVSenemy(m);
-            CD.playerBulletVSenemyPlane();
+            CD.playerVSenemy(player1,player2);
+            CD.playerBulletVSenemyPlane(player1,player2);
             this.timelineControl();
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).update();
@@ -159,11 +161,19 @@ public class GameWorld extends JApplet implements Runnable{
                 else
                     enemybl.remove(i);
             }
-            for(int i = 0; i < playerbl.size(); i++){
-                if(playerbl.get(i).getShow())
-                    playerbl.get(i).update();
+            //update player1's bullet list
+            for(int i = 0; i < player1.getPlane().getBulletList().size(); i++){
+                if((player1.getPlane().getBulletList().get(i)).getShow())
+                    player1.getPlane().getBulletList().get(i).update();
                 else
-                    playerbl.remove(i);
+                    player1.getPlane().getBulletList().remove(i);
+            }
+            //update player2's bullet list
+            for(int i = 0; i < player2.getPlane().getBulletList().size(); i++){
+                if((player2.getPlane().getBulletList().get(i)).getShow())
+                    player2.getPlane().getBulletList().get(i).update();
+                else
+                    player2.getPlane().getBulletList().remove(i);
             }
             for(int i = 0; i< explosions.size(); i++){
                 if(explosions.get(i).getFinished()) {
@@ -174,13 +184,13 @@ public class GameWorld extends JApplet implements Runnable{
                     explosions.get(i).update();
                 }
             }
-            int sz = explosions.size();
             
             drawBackGroundWithTileImage();
             I1.draw(g2,this);
             I2.draw(g2,this);
             I3.draw(g2,this);
-            m.draw(g2,this);
+            player1.getPlane().draw(g2,this);
+            player2.getPlane().draw(g2, this);
             
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).draw(g2,this);
@@ -188,11 +198,13 @@ public class GameWorld extends JApplet implements Runnable{
             for(int i = 0; i < enemybl.size();i++){
                 enemybl.get(i).draw(g2, this);
             }
-            for(int i = 0; i < playerbl.size(); i++){
-                playerbl.get(i).draw(g2,this);
+            for(int i = 0; i < player1.getPlane().getBulletList().size(); i++){
+                player1.getPlane().getBulletList().get(i).draw(g2,this);
             }
-            if(sz != explosions.size())
-                System.out.println("Size mismatch:" + explosions.size());
+            for(int i = 0; i < player2.getPlane().getBulletList().size(); i++){
+                player2.getPlane().getBulletList().get(i).draw(g2,this);
+            }
+            
             for(int i = 0; i < explosions.size(); i++){
                 explosions.get(i).draw(g2, this);
             }
