@@ -22,7 +22,7 @@ public class Explosion{
     public Explosion( int x, int y, int t){
         this.x = x;
         this.y = y;
-        this.count = -1;
+        this.count = 0;
         this. finished = false;
         if(type == 1)
             this.img = GameWorld.smallExp;
@@ -34,8 +34,11 @@ public class Explosion{
         return this.finished;
     }
     public void update(){
-        if(count < img.length-2){
+
+        if(count < img.length-1){
+            //System.out.println(count);
             count ++;
+            //System.out.println(count);
         }else{
             finished = true;
         }
@@ -43,7 +46,8 @@ public class Explosion{
     
     public void draw(Graphics g,ImageObserver obs) {
          if (!finished) {
-             g.drawImage(img[count], x, y, obs);
+             System.out.println(count);
+             g.drawImage(img[count-1], x, y, obs);
              //System.out.print(count);
          }
      }

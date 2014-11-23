@@ -52,11 +52,11 @@ public class PlayerPlane extends GameObject implements Observer{
     
      private  void fire(){
         Bullet playerb;
-        playerb = new Bullet(bulletImg,x+width/2,y,bulletDamage,-1,-3);
+        playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,-2,-3);
         GameWorld.playerbl.add(playerb);
-        playerb = new Bullet(bulletImg,x+width/2,y,bulletDamage,0,-3);
+        playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,0,-3);
         GameWorld.playerbl.add(playerb);
-        playerb = new Bullet(bulletImg,x+width/2,y,bulletDamage,1,-3);
+        playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,2,-3);
         GameWorld.playerbl.add(playerb);
         System.out.println("fire!");
            

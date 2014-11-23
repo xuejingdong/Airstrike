@@ -25,7 +25,7 @@ public class GameWorld extends JApplet implements Runnable{
     Image sea;
     Image myPlane;
     Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, back_enemyImg;
-    Image bulletImg,enemyBulletSmall,enemyBulletBig; 
+    static Image bulletImg,enemyBulletSmall,enemyBulletBig; 
     static Image [] smallExp = new Image[6];
     static Image [] bigExp = new Image[7];
     private BufferedImage bimg;
@@ -37,10 +37,10 @@ public class GameWorld extends JApplet implements Runnable{
     int w = 640, h = 480; // fixed size window game 
     GameEvents gameEvents;
     int eneCount = 10;
-    final int BLUE_ENEMY_DAMAGE = 1;
+    final int GREEN_ENEMY_DAMAGE = 1;
     final int YELLOW_ENEMY_DAMAGE = 4;
     final int WHITE_ENEMY_DAMAGE = 8;
-    final int BLUE_ENEMY_HEALTH = 2;
+    final int GREEN_ENEMY_HEALTH = 2;
     final int YELLOW_ENEMY_HEALTH = 4;
     final int WHITE_ENEMY_HEALTH = 6;
     final int TOP_ENEMY_DIRECTION = 0;
@@ -93,7 +93,7 @@ public class GameWorld extends JApplet implements Runnable{
         m = new PlayerPlane(myPlane,playerPlaneDamage, 300, 360, 5);
         
         for(int i = 0; i < eneCount; i++){
-            enemyl.add( new EnemyPlane(blue_enemyImg,BLUE_ENEMY_HEALTH,BLUE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator));
+            enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
         }
         
         gameEvents = new GameEvents();
@@ -110,17 +110,17 @@ public class GameWorld extends JApplet implements Runnable{
         //create 2 enemy planes that fly from the back
         if(frameCount == 80 || frameCount == 180 || frameCount == 350 || frameCount == 500){
             for(int i =0; i <2; i++){
-                enemyl.add( new EnemyPlane(back_enemyImg,BLUE_ENEMY_HEALTH,BLUE_ENEMY_DAMAGE,BACK_ENEMY_DIRECTION,480,-2,generator));
+                enemyl.add( new EnemyPlane(back_enemyImg,4,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,BACK_ENEMY_DIRECTION,480,-2,generator,false));
             }
         }
         if(frameCount == 300){
            for(int i = 0; i < eneCount; i++){
-                enemyl.add( new EnemyPlane(yellow_enemyImg,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator));
+                enemyl.add( new EnemyPlane(yellow_enemyImg,2,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
            }
         }
         if(frameCount == 600){
             for(int i = 0; i < eneCount; i++){
-                enemyl.add( new EnemyPlane(white_enemyImg,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator));
+                enemyl.add( new EnemyPlane(white_enemyImg,3,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
            }
         }
     }
@@ -153,18 +153,29 @@ public class GameWorld extends JApplet implements Runnable{
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).update();
             }
+            for(int i = 0; i < enemybl.size(); i++){
+                if(enemybl.get(i).getShow())
+                    enemybl.get(i).update();
+                else
+                    enemybl.remove(i);
+            }
             for(int i = 0; i < playerbl.size(); i++){
                 if(playerbl.get(i).getShow())
                     playerbl.get(i).update();
                 else
-                    playerbl.remove(playerbl.get(i));
+                    playerbl.remove(i);
             }
             for(int i = 0; i< explosions.size(); i++){
-                if(explosions.get(i).getFinished())
-                    explosions.remove(explosions.get(i));
-                else
+                if(explosions.get(i).getFinished()) {
+                    explosions.remove(i);
+                    i --;
+                }
+                else{
                     explosions.get(i).update();
+                }
             }
+            int sz = explosions.size();
+            
             drawBackGroundWithTileImage();
             I1.draw(g2,this);
             I2.draw(g2,this);
@@ -174,9 +185,14 @@ public class GameWorld extends JApplet implements Runnable{
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).draw(g2,this);
             }
+            for(int i = 0; i < enemybl.size();i++){
+                enemybl.get(i).draw(g2, this);
+            }
             for(int i = 0; i < playerbl.size(); i++){
                 playerbl.get(i).draw(g2,this);
             }
+            if(sz != explosions.size())
+                System.out.println("Size mismatch:" + explosions.size());
             for(int i = 0; i < explosions.size(); i++){
                 explosions.get(i).draw(g2, this);
             }
