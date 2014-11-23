@@ -20,6 +20,7 @@ public class GameEvents extends Observable{
     int type;
     final int keyE = 1;
     final int collision = 2;
+    int collisionDamage;
     Object event;
        
     public void setValue(KeyEvent e) {

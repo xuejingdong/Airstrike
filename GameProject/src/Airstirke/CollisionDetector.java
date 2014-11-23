@@ -36,18 +36,36 @@ public class CollisionDetector {
             Rectangle eBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getHeight());
             if(p1_box.intersects(eBox)){//check intersection
                 enemy.isDied();// update the enemy -> explosion
-                gameEvent.setValue("Collision"); // update player plane' health
+                gameEvent.setValue("Collision"+" "+enemy.getDamage() ); // update player plane' health
                 
             }
             if(p2_box.intersects(eBox)){//check intersection
                 enemy.isDied();// update the enemy -> explosion
-                gameEvent.setValue("Collision"); // update player plane' health
-                System.out.println("playerVSenemy collision");
+                gameEvent.setValue("Collision"+" "+enemy.getDamage()); // update player plane' health
             }
             
         }
     }
-    public void playerVSenemyBullet(PlayerPlane pp, ArrayList<Bullet> eb){
+    public void playerVSenemyBullet(Player p1,Player p2){
+        Bullet enemyBullet;
+        PlayerPlane pp1 = p1.getPlane();
+        PlayerPlane pp2 = p2.getPlane();
+        Rectangle p1_box = new Rectangle(pp1.getX(), pp1.getY(), pp1.getWidth(), pp1.getHeight());
+        Rectangle p2_box = new Rectangle(pp2.getX(), pp2.getY(), pp2.getWidth(), pp2.getHeight());
+        for(int i =0; i < GameWorld.enemybl.size(); i++){
+            enemyBullet = GameWorld.enemybl.get(i);
+            Rectangle eBox = new Rectangle(enemyBullet.getX(), enemyBullet.getY(),enemyBullet.getWidth(), enemyBullet.getHeight());
+            if(p1_box.intersects(eBox)){//check intersection
+                gameEvent.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
+                GameWorld.enemybl.remove(i);// remove this bullet
+                System.out.println("player VS enemy bullet");
+            }
+            if(p2_box.intersects(eBox)){//check intersection
+                gameEvent.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
+                GameWorld.enemybl.remove(i);// remove this bullet
+                System.out.println("player VS enemy bullet");
+            }
+        }
         
     }
     public void playerBulletVSenemyPlane(Player player1,Player player2){

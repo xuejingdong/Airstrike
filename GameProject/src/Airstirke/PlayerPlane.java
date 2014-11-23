@@ -17,6 +17,7 @@ import java.util.Observer;
 import java.util.Observable;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class PlayerPlane extends GameObject implements Observer{
    
@@ -65,11 +66,26 @@ public class PlayerPlane extends GameObject implements Observer{
      public void reduceHealth(int d){
          this.health -= d;
      }
+     public void isDied(){
+         
+     }
      
      public void draw(Graphics g, ImageObserver obs){
         g.drawImage(img, x, y, obs);
-        if(health > 150){
+        if(this.health >= 150){
             healthbar = new GameObject(healthBars[0],x,y+width,Yspeed);
+            healthbar.draw(g, obs);
+        }
+        if(this.health < 150 && this.health >=100){
+            healthbar = new GameObject(healthBars[1],x,y+width,Yspeed);
+            healthbar.draw(g, obs);
+        }
+        if(this.health < 100 && this.health >=50){
+            healthbar = new GameObject(healthBars[2],x,y+width,Yspeed);
+            healthbar.draw(g, obs);
+        }
+        if(health < 50){
+            healthbar = new GameObject(healthBars[3],x,y+width,Yspeed);
             healthbar.draw(g, obs);
         }
         
@@ -83,7 +99,7 @@ public class PlayerPlane extends GameObject implements Observer{
         myBulletList.add(playerb);
         playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,2,-3);
         myBulletList.add(playerb);
-        System.out.println("fire!");
+        //System.out.println("fire!");
            
      }
     
@@ -117,8 +133,17 @@ public class PlayerPlane extends GameObject implements Observer{
              }
              else if(ge.type == 2) {
                 String msg = (String)ge.event;
-                if(msg.equals("Explosion")) {
-                    System.out.println("Explosion! Reduce Health");
+                String[] msgArray = new String[2];
+                StringTokenizer st = new StringTokenizer(msg);
+                int i = 0;
+                while (st.hasMoreTokens()) {
+                    msgArray[i] = st.nextToken();
+                    i++;
+                }
+                if(msgArray[0].equals("Collision")) {
+                    int y = Integer.parseInt(msgArray[1]);
+                    this.reduceHealth(y);
+                    //System.out.println("Explosion! Reduce Health"+y);
                 }
            }
        }
