@@ -24,8 +24,8 @@ public class GameWorld extends JApplet implements Runnable{
     private Thread thread;
     Image sea;
     Image myPlane;
-    Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, bulletImg;
-    Image enemyBulletSmall,enemyBulletBig; 
+    Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, back_enemyImg;
+    Image bulletImg,enemyBulletSmall,enemyBulletBig; 
     static Image [] smallExp = new Image[6];
     static Image [] bigExp = new Image[7];
     private BufferedImage bimg;
@@ -43,6 +43,8 @@ public class GameWorld extends JApplet implements Runnable{
     final int BLUE_ENEMY_HEALTH = 2;
     final int YELLOW_ENEMY_HEALTH = 4;
     final int WHITE_ENEMY_HEALTH = 6;
+    final int TOP_ENEMY_DIRECTION = 0;
+    final int BACK_ENEMY_DIRECTION =1;
     int playerPlaneDamage = 10;
     int playerBulletDamage = 4;
     int frameCount = 0;
@@ -65,6 +67,7 @@ public class GameWorld extends JApplet implements Runnable{
         blue_enemyImg = ImageIO.read(new File("Resources/enemy1_1.png"));
         yellow_enemyImg = ImageIO.read(new File("Resources/enemy2_1.png"));
         white_enemyImg = ImageIO.read(new File("Resources/enemy3_1.png"));
+        back_enemyImg = ImageIO.read(new File("Resources/enemy4_1.png"));
         bulletImg = ImageIO.read(new File("Resources/bullet.png"));
         enemyBulletSmall = ImageIO.read(new File("Resources/enemybullet1.png"));
         enemyBulletBig = ImageIO.read(new File("Resources/enemybullet1.png"));
@@ -90,7 +93,7 @@ public class GameWorld extends JApplet implements Runnable{
         m = new PlayerPlane(myPlane,playerPlaneDamage, 300, 360, 5);
         
         for(int i = 0; i < eneCount; i++){
-            enemyl.add( new EnemyPlane(blue_enemyImg,BLUE_ENEMY_HEALTH,BLUE_ENEMY_DAMAGE,2,generator));
+            enemyl.add( new EnemyPlane(blue_enemyImg,BLUE_ENEMY_HEALTH,BLUE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator));
         }
         
         gameEvents = new GameEvents();
@@ -104,14 +107,20 @@ public class GameWorld extends JApplet implements Runnable{
     }
     //function added to control what kind of enemy plane is showed
     public void timelineControl(){
+        //create 2 enemy planes that fly from the back
+        if(frameCount == 80 || frameCount == 180 || frameCount == 350 || frameCount == 500){
+            for(int i =0; i <2; i++){
+                enemyl.add( new EnemyPlane(back_enemyImg,BLUE_ENEMY_HEALTH,BLUE_ENEMY_DAMAGE,BACK_ENEMY_DIRECTION,480,-2,generator));
+            }
+        }
         if(frameCount == 300){
            for(int i = 0; i < eneCount; i++){
-                enemyl.add( new EnemyPlane(yellow_enemyImg,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,2,generator));
+                enemyl.add( new EnemyPlane(yellow_enemyImg,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator));
            }
         }
         if(frameCount == 600){
             for(int i = 0; i < eneCount; i++){
-                enemyl.add( new EnemyPlane(white_enemyImg,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,2,generator));
+                enemyl.add( new EnemyPlane(white_enemyImg,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator));
            }
         }
     }

@@ -35,10 +35,7 @@ public class Explosion{
     }
     public void update(){
         if(count < img.length-2){
-            //System.out.println(img.length-2);
-            //System.out.println(count);
             count ++;
-            //System.out.println(count);
         }else{
             finished = true;
         }

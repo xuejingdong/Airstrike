@@ -11,6 +11,7 @@ package Airstirke;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 public class CollisionDetector {
+    GameEvents gameEvent = new GameEvents();
     public void playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
         //check if there is intersection between 2 plane
         Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getHeight());

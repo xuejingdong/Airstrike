@@ -23,14 +23,16 @@ public class EnemyPlane extends GameObject{
     Random generator = new Random();
     GameEvents gameEvents;
     boolean canShoot;
-    int shootFrequent;
+    int shootFreq;
+    int direction;//0: from top, 1: from back
    
-    EnemyPlane(Image img,int health, int damage,int Yspeed,Random gen){ 
-       super(img, Math.abs(gen.nextInt() % (600 - 30)),-20,Yspeed);
+    EnemyPlane(Image img,int health, int damage,int direction,int y, int Yspeed,Random gen){ 
+       super(img, Math.abs(gen.nextInt() % (600 - 30)),y,Yspeed);
        this.health = health;
        this.gen = gen;
        this.show = true;
        this.damage = damage;
+       this.direction = direction;
        //this.gameEvents = gameEvent;
     }
     
@@ -45,12 +47,22 @@ public class EnemyPlane extends GameObject{
      public void reduceHealth(int d){
          this.health -= d;
      }
+    //update for enemy planes come from both directions 
     public void update() {
-         y += Yspeed;
-         if(y > 430)
-            this.reset();
-         if(this.health <= 0)
-             isDied();
+        if(this.direction == 0){
+            y += Yspeed;
+            if(y > 430)
+                this.reset();
+            if(this.health <= 0)
+                isDied();
+        } 
+        else{
+           y += Yspeed;
+           if(y < 0)
+               this.reset();
+           if(this.health <= 0)
+               isDied();
+        }
     }
    
     //call explosion, and remove itself from the enemyPlane array
@@ -61,8 +73,14 @@ public class EnemyPlane extends GameObject{
     
     }
     public void reset() {
-         this.x = Math.abs(generator.nextInt() % (600 - 30));
-         this.y = -10;
+        if(this.direction == 0){
+            this.x = Math.abs(generator.nextInt() % (600 - 30));
+            this.y = -10;
+        }
+        else{
+            this.x = Math.abs(generator.nextInt() % (600 - 30));
+            this.y = 480;
+        }
      }
 
      public void draw(Graphics g,ImageObserver obs) {
