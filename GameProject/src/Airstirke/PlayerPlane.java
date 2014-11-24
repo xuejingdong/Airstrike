@@ -23,6 +23,7 @@ public class PlayerPlane extends GameObject implements Observer{
    
     private int health,damage,bulletDamage;
     private int up,down,left,right,fire;
+    private int lifeCount;
     private boolean boom;
     private Image bulletImg, leftBulletImg, rightBulletImg;
     private ArrayList <Bullet> myBulletList;
@@ -33,7 +34,6 @@ public class PlayerPlane extends GameObject implements Observer{
     
     PlayerPlane(Image img, int damge,int x, int y, int Yspeed,int up, int down, int left, int right, int fire) {
          super(img,x,y,Yspeed);
-         boom = false;
          health = 200;
          this.damage = damage;
          this.bulletDamage = 4;
@@ -47,7 +47,7 @@ public class PlayerPlane extends GameObject implements Observer{
          this.healthBars = new Image[4];
          this.soundFileName = "Resources/snd_explosion2.wav";
          this.sp = new SoundPlayer(2,soundFileName);
-         
+         this.lifeCount = 3;
          try{
              bulletImg = ImageIO.read(new File("Resources/bullet.png"));
              leftBulletImg = ImageIO.read(new File("Resources/bulletLeft.png"));
@@ -58,7 +58,7 @@ public class PlayerPlane extends GameObject implements Observer{
              healthBars[3] = ImageIO.read(new File("Resources/health3.png"));
          }
          catch (Exception e) {
-            System.out.print("No resources are found");
+            System.out.print(e.getMessage() + "Player plane: no resources are found");
         }
     }
      public int getDamage(){
@@ -81,8 +81,19 @@ public class PlayerPlane extends GameObject implements Observer{
      public void isDied(){
          GameWorld.explosions.add(new Explosion(x,y,GameWorld.bigExp));
          System.out.println("player plane explodes");
-         boom = true;
+         
          sp.play();
+         if(this.lifeCount >1){
+            lifeCount --;
+            this.health = 200;
+            this.x = 200;
+            this.y = 360;
+         }
+         else{
+             this.x = 480;
+             this.y = 500;
+             boom = true;
+         }
          
      }
      public void draw(Graphics g, ImageObserver obs){

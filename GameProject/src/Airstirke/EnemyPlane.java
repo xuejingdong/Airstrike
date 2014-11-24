@@ -25,7 +25,7 @@ public class EnemyPlane extends GameObject{
     boolean canShoot;
     int shootFreq;
     int direction;//0: from top, 1: from back
-    int enemyType;//1: green, 2: yellow, 3: white, 4: back
+    int enemyType;//1: green, 2: yellow, 3: white, 4: back, 5: BOSS
     int bullet_type;//1: green &yellow; 2: white;
     int bullet_damage;
     Image bullet_image;
@@ -46,12 +46,12 @@ public class EnemyPlane extends GameObject{
        this.sp = new SoundPlayer(2,soundFileName);
        if(enemyType == 1 || enemyType == 2){
            this.bullet_type = 1;
-           this.bullet_damage = 2;
+           this.bullet_damage = 3;
            this.bullet_image = GameWorld.enemyBulletSmall;
        }
-       if(enemyType == 3){
+       if(enemyType == 3 || enemyType == 5){
            this.bullet_type = 2;
-           this.bullet_damage = 4;
+           this.bullet_damage = 6;
            this.bullet_image = GameWorld.enemyBulletBig;
            //this.gameEvents = gameEvent;
        }    
@@ -81,6 +81,15 @@ public class EnemyPlane extends GameObject{
          }
          if(shootFreq% 40== 0 && show&&enemyType == 2){
             Bullet enemyb;
+            enemyb = new Bullet(bullet_image,x-width/10-1,y+5,bullet_damage,-1,4);
+            GameWorld.enemybl.add(enemyb);
+            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
+            GameWorld.enemybl.add(enemyb);
+            enemyb = new Bullet(bullet_image,x+width/10+1,y+5,bullet_damage,1,4);
+            GameWorld.enemybl.add(enemyb);
+         }
+         if(shootFreq%30== 0 && show&&enemyType ==3){
+            Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,-1,4);
             GameWorld.enemybl.add(enemyb);
             enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
@@ -88,9 +97,13 @@ public class EnemyPlane extends GameObject{
             enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,1,4);
             GameWorld.enemybl.add(enemyb);
          }
-         if(shootFreq%30== 0 && show&&enemyType ==3){
+         if(shootFreq%30== 0 && show&&enemyType == 5){
             Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,-1,4);
+            GameWorld.enemybl.add(enemyb);
+            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
+            GameWorld.enemybl.add(enemyb);
+            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
             GameWorld.enemybl.add(enemyb);
             enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
             GameWorld.enemybl.add(enemyb);

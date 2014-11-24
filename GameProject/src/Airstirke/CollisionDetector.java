@@ -30,17 +30,18 @@ public class CollisionDetector {
         EnemyPlane enemy;
         PlayerPlane p1 = player1.getPlane();
         PlayerPlane p2 = player2.getPlane();
+        
         Rectangle p1_box = new Rectangle(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
         Rectangle p2_box = new Rectangle(p2.getX(), p2.getY(), p2.getWidth(), p2.getHeight());
         for(int i =0; i < GameWorld.enemyl.size(); i++){
             enemy = GameWorld.enemyl.get(i);
             Rectangle eBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getHeight());
-            if(p1_box.intersects(eBox)){//check intersection
+            if(p1_box.intersects(eBox)&&!p1.getBoom()){//check intersection
                 enemy.isDied();// update the enemy -> explosion
                 gameEvent1.setValue("Collision"+" "+enemy.getDamage() ); // update player plane' health
                 
             }
-            if(p2_box.intersects(eBox)){//check intersection
+            if(p2_box.intersects(eBox)&&!p2.getBoom()){//check intersection
                 enemy.isDied();// update the enemy -> explosion
                 gameEvent2.setValue("Collision"+" "+enemy.getDamage()); // update player plane' health
             }
@@ -56,12 +57,12 @@ public class CollisionDetector {
         for(int i =0; i < GameWorld.enemybl.size(); i++){
             enemyBullet = GameWorld.enemybl.get(i);
             Rectangle eBox = new Rectangle(enemyBullet.getX(), enemyBullet.getY(),enemyBullet.getWidth(), enemyBullet.getHeight());
-            if(p1_box.intersects(eBox)){//check intersection
+            if(p1_box.intersects(eBox)&&!pp1.getBoom()){//check intersection
                 gameEvent1.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
                 GameWorld.enemybl.remove(i);// remove this bullet
                 //System.out.println("player VS enemy bullet");
             }
-            if(p2_box.intersects(eBox)){//check intersection
+            if(p2_box.intersects(eBox)&&!pp2.getBoom()){//check intersection
                 gameEvent2.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
                 GameWorld.enemybl.remove(i);// remove this bullet
                 //System.out.println("player VS enemy bullet");
@@ -81,7 +82,7 @@ public class CollisionDetector {
                 enemy = GameWorld.enemyl.get(j);
                 Rectangle enemyBox = new Rectangle(enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
                 //check collision, 
-                if(bulletBox.intersects(enemyBox)){
+                if(bulletBox.intersects(enemyBox)&&!player1.getPlane().getBoom()){
                     player1_bl.remove(bullet);//remove bullet from list 
                     player1.addScore(enemy.getDamage());
                     enemy.reduceHealth(bullet.getDamge());//reduce enemy health
@@ -95,7 +96,7 @@ public class CollisionDetector {
                 enemy = GameWorld.enemyl.get(j);
                 Rectangle enemyBox = new Rectangle(enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
                 //check collision, 
-                if(bulletBox.intersects(enemyBox)){
+                if(bulletBox.intersects(enemyBox)&&!player2.getPlane().getBoom()){
                     player2_bl.remove(bullet);//remove bullet from list 
                     player2.addScore(enemy.getDamage());
                     enemy.reduceHealth(bullet.getDamge());//reduce enemy health

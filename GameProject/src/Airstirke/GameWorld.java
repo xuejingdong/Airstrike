@@ -23,7 +23,7 @@ import java.util.Observer;
 public class GameWorld extends JApplet implements Runnable{
     private Thread thread;
     Image sea;
-    Image myPlane,gameOver,win,lose;
+    Image myPlane,gameOver,win,lose,boss_Enemy;
     Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, back_enemyImg;
     static Image enemyBulletSmall,enemyBulletBig; 
     static Image [] smallExp = new Image[6];
@@ -45,6 +45,8 @@ public class GameWorld extends JApplet implements Runnable{
     final int WHITE_ENEMY_HEALTH = 6;
     final int TOP_ENEMY_DIRECTION = 0;
     final int BACK_ENEMY_DIRECTION =1;
+    final int BOSS_DAMAGE = 50;
+    final int BOSS_HEALTH = 100;
     int playerPlaneDamage = 10;
     int playerBulletDamage = 4;
     int frameCount = 0;
@@ -74,6 +76,7 @@ public class GameWorld extends JApplet implements Runnable{
         gameOver = ImageIO.read(new File("Resources/gameOver.png"));
         win = ImageIO.read(new File("Resources/youWin.png"));
         lose = ImageIO.read(new File("Resources/youLose.png"));
+        boss_Enemy = ImageIO.read(new File("Resources/boss.png"));
         //get small explosion image array
         smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
         smallExp[1] = ImageIO.read(new File("Resources/explosion1_2.png"));
@@ -97,6 +100,11 @@ public class GameWorld extends JApplet implements Runnable{
         player1 = new Player(1,3,KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         player2 = new Player(3,3,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
         
+        if(player1 == null)
+            System.out.println("Player 1 is null!");
+        if(player2 == null)
+            System.out.println("Player 2 is null!");
+        
         for(int i = 0; i < eneCount; i++){
             boolean canShoot;
             if(i%2 == 0)
@@ -119,7 +127,7 @@ public class GameWorld extends JApplet implements Runnable{
         
         }
         catch (Exception e) {
-            System.out.print("No resources are found");
+            System.out.print(e.getStackTrace() +" No resources are found");
         }
     }
     //function added to control what kind of enemy plane is showed
@@ -150,6 +158,11 @@ public class GameWorld extends JApplet implements Runnable{
                 enemyl.add( new EnemyPlane(white_enemyImg,3,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,true));
            }
         }
+        //BOSS
+        if(frameCount == 3000){
+            enemyl.add( new EnemyPlane(boss_Enemy,5,BOSS_HEALTH,BOSS_DAMAGE,TOP_ENEMY_DIRECTION,0,-3,generator,true));
+        }
+            
     }
     public void drawBackGroundWithTileImage() {
         int TileWidth = sea.getWidth(this);
@@ -174,6 +187,7 @@ public class GameWorld extends JApplet implements Runnable{
             I2.update();
             I3.update();
             //check collision
+            
             CD.playerVSenemy(player1,player2);
             CD.playerBulletVSenemyPlane(player1,player2);
             CD.playerVSenemyBullet(player1, player2);
