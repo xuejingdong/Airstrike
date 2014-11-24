@@ -28,7 +28,9 @@ public class PlayerPlane extends GameObject implements Observer{
     private ArrayList <Bullet> myBulletList;
     private Image [] healthBars, healthImg;
     private GameObject healthbar;
-
+    String soundFileName;
+    SoundPlayer sp;
+    
     PlayerPlane(Image img, int damge,int x, int y, int Yspeed,int up, int down, int left, int right, int fire) {
          super(img,x,y,Yspeed);
          boom = false;
@@ -40,8 +42,11 @@ public class PlayerPlane extends GameObject implements Observer{
          this.left = left;
          this.right = right;
          this.fire = fire;
+         this.boom = false;
          this.myBulletList = new ArrayList<Bullet>();
          this.healthBars = new Image[4];
+         this.soundFileName = "Resources/snd_explosion2.wav";
+         this.sp = new SoundPlayer(2,soundFileName);
          
          try{
              bulletImg = ImageIO.read(new File("Resources/bullet.png"));
@@ -63,30 +68,42 @@ public class PlayerPlane extends GameObject implements Observer{
      public ArrayList<Bullet> getBulletList(){
          return this.myBulletList;
      }
-     public void reduceHealth(int d){
-         this.health -= d;
+     
+     public boolean getBoom(){
+         return this.boom;
      }
-     public void isDied(){
+     public void reduceHealth(int d){
+         if(health < d)
+             this.isDied();
+         this.health -= d;
          
      }
-     
+     public void isDied(){
+         GameWorld.explosions.add(new Explosion(x,y,GameWorld.bigExp));
+         System.out.println("player plane explodes");
+         boom = true;
+         sp.play();
+         
+     }
      public void draw(Graphics g, ImageObserver obs){
-        g.drawImage(img, x, y, obs);
-        if(this.health >= 150){
-            healthbar = new GameObject(healthBars[0],x,y+width,Yspeed);
-            healthbar.draw(g, obs);
-        }
-        if(this.health < 150 && this.health >=100){
-            healthbar = new GameObject(healthBars[1],x,y+width,Yspeed);
-            healthbar.draw(g, obs);
-        }
-        if(this.health < 100 && this.health >=50){
-            healthbar = new GameObject(healthBars[2],x,y+width,Yspeed);
-            healthbar.draw(g, obs);
-        }
-        if(health < 50){
-            healthbar = new GameObject(healthBars[3],x,y+width,Yspeed);
-            healthbar.draw(g, obs);
+        if(!boom){
+            g.drawImage(img, x, y, obs);
+            if(this.health >= 150){
+                healthbar = new GameObject(healthBars[0],x,y+width,Yspeed);
+                healthbar.draw(g, obs);
+            }
+            if(this.health < 150 && this.health >=100){
+                healthbar = new GameObject(healthBars[1],x,y+width,Yspeed);
+                healthbar.draw(g, obs);
+            }
+            if(this.health < 100 && this.health >=50){
+                healthbar = new GameObject(healthBars[2],x,y+width,Yspeed);
+                healthbar.draw(g, obs);
+            }
+            if(health < 50){
+                healthbar = new GameObject(healthBars[3],x,y+width,Yspeed);
+                healthbar.draw(g, obs);
+            }
         }
         
     }

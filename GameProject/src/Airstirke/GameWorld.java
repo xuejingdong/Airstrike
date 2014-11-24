@@ -23,7 +23,7 @@ import java.util.Observer;
 public class GameWorld extends JApplet implements Runnable{
     private Thread thread;
     Image sea;
-    Image myPlane;
+    Image myPlane,gameOver,win,lose;
     Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, back_enemyImg;
     static Image enemyBulletSmall,enemyBulletBig; 
     static Image [] smallExp = new Image[6];
@@ -35,8 +35,8 @@ public class GameWorld extends JApplet implements Runnable{
     Island I1, I2, I3;
     //PlayerPlane m;
     int w = 640, h = 480; // fixed size window game 
-    GameEvents gameEvents;
-    int eneCount = 10;
+    GameEvents gameEvent1, gameEvent2;
+    int eneCount = 20;
     final int GREEN_ENEMY_DAMAGE = 1;
     final int YELLOW_ENEMY_DAMAGE = 4;
     final int WHITE_ENEMY_DAMAGE = 8;
@@ -71,6 +71,9 @@ public class GameWorld extends JApplet implements Runnable{
         back_enemyImg = ImageIO.read(new File("Resources/enemy4_1.png"));
         enemyBulletSmall = ImageIO.read(new File("Resources/enemybullet1.png"));
         enemyBulletBig = ImageIO.read(new File("Resources/enemybullet1.png"));
+        gameOver = ImageIO.read(new File("Resources/gameOver.png"));
+        win = ImageIO.read(new File("Resources/youWon.png"));
+        lose = ImageIO.read(new File("Resources/youLose.png"));
         //get small explosion image array
         smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
         smallExp[1] = ImageIO.read(new File("Resources/explosion1_2.png"));
@@ -91,19 +94,28 @@ public class GameWorld extends JApplet implements Runnable{
         I2 = new Island(island2, 200, 400, speed, generator);
         I3 = new Island(island3, 300, 200, speed, generator);
         
-        player2 = new Player(1,3,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
-        player1 = new Player(3,3,KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
+        player1 = new Player(1,3,KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
+        player2 = new Player(3,3,KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
+        
         for(int i = 0; i < eneCount; i++){
-            enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
+            boolean canShoot;
+            if(i%2 == 0)
+                canShoot = true;
+            else 
+                canShoot = false;
+            enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-10*i,2,generator,canShoot));
         }
         
-        gameEvents = new GameEvents();
-        gameEvents.addObserver(player1.getPlane());
-        gameEvents.addObserver(player2.getPlane());
-        KeyControl key = new KeyControl(gameEvents);
-        addKeyListener(key);
+        gameEvent1 = new GameEvents();
+        gameEvent2 = new GameEvents();
+        gameEvent1.addObserver(player1.getPlane());
+        gameEvent2.addObserver(player2.getPlane());
+        KeyControl key1 = new KeyControl(gameEvent1);
+        KeyControl key2 = new KeyControl(gameEvent2);
+        addKeyListener(key1);
+        addKeyListener(key2);
         sp = new SoundPlayer(1,"Resources/background.wav");
-        CD = new CollisionDetector(gameEvents);
+        CD = new CollisionDetector(gameEvent1,gameEvent2);
         
         }
         catch (Exception e) {
@@ -113,19 +125,29 @@ public class GameWorld extends JApplet implements Runnable{
     //function added to control what kind of enemy plane is showed
     public void timelineControl(){
         //create 2 enemy planes that fly from the back
-        if(frameCount == 80 || frameCount == 180 || frameCount == 350 || frameCount == 500){
-            for(int i =0; i <2; i++){
+        if(frameCount%100 == 0){
+            for(int i =0; i <3; i++){
                 enemyl.add( new EnemyPlane(back_enemyImg,4,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,BACK_ENEMY_DIRECTION,480,-2,generator,false));
             }
         }
-        if(frameCount == 300){
+        if(frameCount == 150 || frameCount == 250){
+            for(int i = 0; i < eneCount; i++){
+                boolean canShoot;
+                if(i%3 == 0)
+                    canShoot = true;
+                else 
+                    canShoot = false;
+                enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,canShoot));
+            }
+        }
+        if(frameCount == 500 || frameCount == 750 || frameCount == 1000){
            for(int i = 0; i < eneCount; i++){
-                enemyl.add( new EnemyPlane(yellow_enemyImg,2,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
+                enemyl.add( new EnemyPlane(yellow_enemyImg,2,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,true));
            }
         }
-        if(frameCount == 600){
+        if(frameCount == 900 || frameCount == 1100||frameCount == 2200){
             for(int i = 0; i < eneCount; i++){
-                enemyl.add( new EnemyPlane(white_enemyImg,3,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20,2,generator,true));
+                enemyl.add( new EnemyPlane(white_enemyImg,3,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,true));
            }
         }
     }
@@ -154,15 +176,15 @@ public class GameWorld extends JApplet implements Runnable{
             //check collision
             CD.playerVSenemy(player1,player2);
             CD.playerBulletVSenemyPlane(player1,player2);
+            CD.playerVSenemyBullet(player1, player2);
             this.timelineControl();
+            
             for(int i = 0; i < enemyl.size(); i++){
                 enemyl.get(i).update();
             }
             for(int i = 0; i < enemybl.size(); i++){
-                if(enemybl.get(i).getShow())
-                    enemybl.get(i).update();
-                else
-                    enemybl.remove(i);
+                enemybl.get(i).update();
+               
             }
             //update player1's bullet list
             for(int i = 0; i < player1.getPlane().getBulletList().size(); i++){

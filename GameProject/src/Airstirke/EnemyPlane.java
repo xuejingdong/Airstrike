@@ -61,6 +61,10 @@ public class EnemyPlane extends GameObject{
         return this.damage;
     }
     
+    public int getBulletDamage(){
+        return this.getBulletDamage();
+    }
+    
      public void setDamage(int d){
          this.damage = d;
      }
@@ -70,12 +74,21 @@ public class EnemyPlane extends GameObject{
      }
      
      public void shoot(){
-         if(shootFreq%30 == 0 && show){
+         if(shootFreq%15 == 0 && show && enemyType == 1){
             Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,0,4);
             GameWorld.enemybl.add(enemyb);
          }
-         if(shootFreq%30 == 0 && show&&enemyType ==3){
+         if(shootFreq% 40== 0 && show&&enemyType == 2){
+            Bullet enemyb;
+            enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,-1,4);
+            GameWorld.enemybl.add(enemyb);
+            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
+            GameWorld.enemybl.add(enemyb);
+            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,1,4);
+            GameWorld.enemybl.add(enemyb);
+         }
+         if(shootFreq%30== 0 && show&&enemyType ==3){
             Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,-1,4);
             GameWorld.enemybl.add(enemyb);
@@ -113,7 +126,7 @@ public class EnemyPlane extends GameObject{
         GameWorld.enemyl.remove(this);
         GameWorld.explosions.add(new Explosion(x,y,GameWorld.smallExp));
         sp.play();
-        System.out.println("enemy explosion");
+        //System.out.println("enemy explosion");
     }
     
     public void reset() {

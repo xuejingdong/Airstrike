@@ -12,10 +12,11 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 public class CollisionDetector {
     
-    GameEvents gameEvent;
+    GameEvents gameEvent1, gameEvent2;
     
-    public CollisionDetector(GameEvents ge){
-        this.gameEvent = ge;
+    public CollisionDetector(GameEvents ge1, GameEvents ge2){
+        this.gameEvent1 = ge1;
+        this.gameEvent2 = ge2;
     }
     
     public void playerVSplayer(PlayerPlane pp, PlayerPlane pp2){
@@ -36,12 +37,12 @@ public class CollisionDetector {
             Rectangle eBox = new Rectangle(enemy.getX(), enemy.getY(),enemy.getWidth(), enemy.getHeight());
             if(p1_box.intersects(eBox)){//check intersection
                 enemy.isDied();// update the enemy -> explosion
-                gameEvent.setValue("Collision"+" "+enemy.getDamage() ); // update player plane' health
+                gameEvent1.setValue("Collision"+" "+enemy.getDamage() ); // update player plane' health
                 
             }
             if(p2_box.intersects(eBox)){//check intersection
                 enemy.isDied();// update the enemy -> explosion
-                gameEvent.setValue("Collision"+" "+enemy.getDamage()); // update player plane' health
+                gameEvent2.setValue("Collision"+" "+enemy.getDamage()); // update player plane' health
             }
             
         }
@@ -56,14 +57,14 @@ public class CollisionDetector {
             enemyBullet = GameWorld.enemybl.get(i);
             Rectangle eBox = new Rectangle(enemyBullet.getX(), enemyBullet.getY(),enemyBullet.getWidth(), enemyBullet.getHeight());
             if(p1_box.intersects(eBox)){//check intersection
-                gameEvent.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
+                gameEvent1.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
                 GameWorld.enemybl.remove(i);// remove this bullet
-                System.out.println("player VS enemy bullet");
+                //System.out.println("player VS enemy bullet");
             }
             if(p2_box.intersects(eBox)){//check intersection
-                gameEvent.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
+                gameEvent2.setValue("Collision"+" "+enemyBullet.getDamge()); // update player plane' health
                 GameWorld.enemybl.remove(i);// remove this bullet
-                System.out.println("player VS enemy bullet");
+                //System.out.println("player VS enemy bullet");
             }
         }
         
@@ -83,6 +84,20 @@ public class CollisionDetector {
                 if(bulletBox.intersects(enemyBox)){
                     player1_bl.remove(bullet);//remove bullet from list 
                     player1.addScore(enemy.getDamage());
+                    enemy.reduceHealth(bullet.getDamge());//reduce enemy health
+                }
+            }
+        }
+        for(int i  = 0; i < player2_bl.size(); i++){
+            bullet = player2_bl.get(i);
+            Rectangle bulletBox = new Rectangle(bullet.getX(),bullet.getY(),bullet.getWidth(),bullet.getHeight());
+            for(int j = 0; j < GameWorld.enemyl.size(); j++){
+                enemy = GameWorld.enemyl.get(j);
+                Rectangle enemyBox = new Rectangle(enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
+                //check collision, 
+                if(bulletBox.intersects(enemyBox)){
+                    player2_bl.remove(bullet);//remove bullet from list 
+                    player2.addScore(enemy.getDamage());
                     enemy.reduceHealth(bullet.getDamge());//reduce enemy health
                 }
             }
