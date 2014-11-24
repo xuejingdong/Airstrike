@@ -72,7 +72,7 @@ public class GameWorld extends JApplet implements Runnable{
         enemyBulletSmall = ImageIO.read(new File("Resources/enemybullet1.png"));
         enemyBulletBig = ImageIO.read(new File("Resources/enemybullet1.png"));
         gameOver = ImageIO.read(new File("Resources/gameOver.png"));
-        win = ImageIO.read(new File("Resources/youWon.png"));
+        win = ImageIO.read(new File("Resources/youWin.png"));
         lose = ImageIO.read(new File("Resources/youLose.png"));
         //get small explosion image array
         smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
@@ -236,7 +236,8 @@ public class GameWorld extends JApplet implements Runnable{
             
             //increment frameCounter
             frameCount ++;
-            
+            if(frameCount == 2199)
+                System.out.println("Player1: "+player1.getScore()+ " "+"Player2: "+player2.getScore());
     }
 
     public void paint(Graphics g) {
