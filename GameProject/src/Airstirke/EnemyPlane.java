@@ -17,33 +17,35 @@ import java.util.Random;
  * @author Dong
  */
 public class EnemyPlane extends GameObject{
-    int damage,health;
-    Random gen;
-    boolean show;
-    Random generator = new Random();
-    GameEvents gameEvents;
-    boolean canShoot;
-    int shootFreq;
-    int direction;//0: from top, 1: from back
-    int enemyType;//1: green, 2: yellow, 3: white, 4: back, 5: BOSS
-    int bullet_type;//1: green &yellow; 2: white;
-    int bullet_damage;
-    Image bullet_image;
-    String soundFileName;
-    SoundPlayer sp;
+    private int damage,health;
+    private Random gen;
+    private boolean is_Died;
+    private Random generator = new Random();
+    private GameEvents gameEvents;
+    private boolean canShoot;
+    private boolean isBoss;
+    private int shootFreq;
+    private int direction;//0: from top, 1: from back
+    private int enemyType;//1: green, 2: yellow, 3: white, 4: back, 5: BOSS
+    private int bullet_type;//1: green &yellow; 2: white;
+    private int bullet_damage;
+    private Image bullet_image;
+    private String soundFileName;
+    private SoundPlayer sp;
    
-    EnemyPlane(Image img,int enemyType,int health, int damage,int direction,int y, int Yspeed,Random gen,boolean canShoot){ 
+    EnemyPlane(Image img,int enemyType,int health, int damage,int direction,int y, int Yspeed,Random gen,boolean canShoot, boolean isBoss){ 
        super(img, Math.abs(gen.nextInt() % (600 - 30)),y,Yspeed);
        this.enemyType = enemyType;
        this.health = health;
        this.gen = gen;
-       this.show = true;
+       this.is_Died = false;
        this.damage = damage;
        this.direction = direction;
        this.canShoot = canShoot;
        this.shootFreq = 0 ;
        this.soundFileName = "Resources/snd_explosion1.wav";
        this.sp = new SoundPlayer(2,soundFileName);
+       this.isBoss = isBoss;
        if(enemyType == 1 || enemyType == 2){
            this.bullet_type = 1;
            this.bullet_damage = 3;
@@ -55,6 +57,9 @@ public class EnemyPlane extends GameObject{
            this.bullet_image = GameWorld.enemyBulletBig;
            //this.gameEvents = gameEvent;
        }    
+       if(this.isBoss == true){
+           this.x = 300;
+       }
     }
     
     public int getDamage(){
@@ -64,7 +69,7 @@ public class EnemyPlane extends GameObject{
     public int getBulletDamage(){
         return this.getBulletDamage();
     }
-    
+   
      public void setDamage(int d){
          this.damage = d;
      }
@@ -74,12 +79,12 @@ public class EnemyPlane extends GameObject{
      }
      
      public void shoot(){
-         if(shootFreq%15 == 0 && show && enemyType == 1){
+         if(shootFreq%15 == 0 && enemyType == 1){
             Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,0,4);
             GameWorld.enemybl.add(enemyb);
          }
-         if(shootFreq% 40== 0 && show&&enemyType == 2){
+         if(shootFreq% 40== 0 && enemyType == 2){
             Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10-1,y+5,bullet_damage,-1,4);
             GameWorld.enemybl.add(enemyb);
@@ -88,7 +93,7 @@ public class EnemyPlane extends GameObject{
             enemyb = new Bullet(bullet_image,x+width/10+1,y+5,bullet_damage,1,4);
             GameWorld.enemybl.add(enemyb);
          }
-         if(shootFreq%30== 0 && show&&enemyType ==3){
+         if(shootFreq%30== 0 && enemyType ==3){
             Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,-1,4);
             GameWorld.enemybl.add(enemyb);
@@ -97,7 +102,7 @@ public class EnemyPlane extends GameObject{
             enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,1,4);
             GameWorld.enemybl.add(enemyb);
          }
-         if(shootFreq%30== 0 && show&&enemyType == 5){
+         if(shootFreq%30== 0&&enemyType == 5){
             Bullet enemyb;
             enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,-1,4);
             GameWorld.enemybl.add(enemyb);
@@ -139,6 +144,9 @@ public class EnemyPlane extends GameObject{
         GameWorld.enemyl.remove(this);
         GameWorld.explosions.add(new Explosion(x,y,GameWorld.smallExp));
         sp.play();
+        this.is_Died = true;
+        if(this.isBoss)
+            GameWorld.isBossDied = true;
         //System.out.println("enemy explosion");
     }
     
@@ -154,8 +162,7 @@ public class EnemyPlane extends GameObject{
      }
 
      public void draw(Graphics g,ImageObserver obs) {
-         if (show) {
              g.drawImage(img, x, y, obs);
-         }
+         
      }
 }

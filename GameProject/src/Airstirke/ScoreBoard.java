@@ -12,19 +12,26 @@ import java.awt.image.ImageObserver;
  *
  * @author Dong
  */
-public class ScoreBoard extends GameObject{
-    private int currentScore;
+public class ScoreBoard {
+    private int currentScore,x,y,Yspeed;
+    private String content;
+    private Player player;
     
-    public ScoreBoard(Image img, int x, int y, int Yspeed){
-        super(img, x, y, Yspeed);
+    public ScoreBoard(int x, int y, int Yspeed,Player p){
+        this.x = x;
+        this.y = y;
+        this.Yspeed = Yspeed;
+        this.player = p;
     }
     
     public void update(){
-        
+        content = "Palyer"+ player.getPlayerID()+ ": "+player.getScore();
+        System.out.println(content);
     }
     
+    
     public void draw(Graphics g, ImageObserver obs){
-         g.drawImage(img, x, y, obs);
+         g.drawString(content, x, y);
     
     }
     

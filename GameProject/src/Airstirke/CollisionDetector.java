@@ -104,11 +104,25 @@ public class CollisionDetector {
             }
         }
     }
-    public void playerVSpowerup(PlayerPlane pp, PowerUp pu){
-        Rectangle pbox = new Rectangle(pp.getX(), pp.getY(), pp.getWidth(), pp.getHeight());
-        Rectangle powerbox = new Rectangle(pu.getX(), pu.getY(), pu.getWidth(), pu.getHeight());
-        if(pbox.intersects(powerbox)){
-            
+    public void playerVSpowerup(Player player1, Player player2){
+        PlayerPlane playerPlane1 = player1.getPlane();
+        PlayerPlane playerPlane2 = player2.getPlane();
+        PowerUp power;
+        Rectangle p1box = new Rectangle(playerPlane1.getX(), playerPlane1.getY(), playerPlane1.getWidth(), playerPlane1.getHeight());
+        Rectangle p2box = new Rectangle(playerPlane2.getX(), playerPlane2.getY(), playerPlane2.getWidth(), playerPlane2.getHeight());
+        for(int i =0; i < GameWorld.powerUp.size(); i++){
+            power = GameWorld.powerUp.get(i);
+            Rectangle puBox = new Rectangle(power.getX(), power.getY(),power.getWidth(), power.getHeight());
+            if(p1box.intersects(puBox)&&!playerPlane1.getBoom()){//check intersection
+                playerPlane1.addHealth(5);// update player plane' health
+                GameWorld.powerUp.remove(i);// remove this bullet
+            }
+            if(p2box.intersects(puBox)&&!playerPlane2.getBoom()){//check intersection
+                playerPlane2.addHealth(5);// update player plane' health
+                GameWorld.powerUp.remove(i);// remove this bullet
+            }
         }
-    }
-}
+            
+     }
+ }
+

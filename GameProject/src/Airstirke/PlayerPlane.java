@@ -25,14 +25,14 @@ public class PlayerPlane extends GameObject implements Observer{
     private int up,down,left,right,fire;
     private int lifeCount;
     private boolean boom;
-    private Image bulletImg, leftBulletImg, rightBulletImg;
+    private Image bulletImg, leftBulletImg, rightBulletImg,lifeImg;
     private ArrayList <Bullet> myBulletList;
     private Image [] healthBars, healthImg;
     private GameObject healthbar;
     String soundFileName;
     SoundPlayer sp;
     
-    PlayerPlane(Image img, int damge,int x, int y, int Yspeed,int up, int down, int left, int right, int fire) {
+    PlayerPlane(Image img,int life, int damge,int x, int y, int Yspeed,int up, int down, int left, int right, int fire) {
          super(img,x,y,Yspeed);
          health = 200;
          this.damage = damage;
@@ -47,7 +47,7 @@ public class PlayerPlane extends GameObject implements Observer{
          this.healthBars = new Image[4];
          this.soundFileName = "Resources/snd_explosion2.wav";
          this.sp = new SoundPlayer(2,soundFileName);
-         this.lifeCount = 3;
+         this.lifeCount = life;
          try{
              bulletImg = ImageIO.read(new File("Resources/bullet.png"));
              leftBulletImg = ImageIO.read(new File("Resources/bulletLeft.png"));
@@ -56,6 +56,7 @@ public class PlayerPlane extends GameObject implements Observer{
              healthBars[1] = ImageIO.read(new File("Resources/health1.png"));
              healthBars[2] = ImageIO.read(new File("Resources/health2.png"));
              healthBars[3] = ImageIO.read(new File("Resources/health3.png"));
+             lifeImg = ImageIO.read(new File("Resources/life.png"));
          }
          catch (Exception e) {
             System.out.print(e.getMessage() + "Player plane: no resources are found");
@@ -77,6 +78,9 @@ public class PlayerPlane extends GameObject implements Observer{
              this.isDied();
          this.health -= d;
          
+     }
+     public void addHealth(int h){
+         this.health += h;
      }
      public void isDied(){
          GameWorld.explosions.add(new Explosion(x,y,GameWorld.bigExp));
@@ -100,20 +104,24 @@ public class PlayerPlane extends GameObject implements Observer{
         if(!boom){
             g.drawImage(img, x, y, obs);
             if(this.health >= 150){
-                healthbar = new GameObject(healthBars[0],x,y+width,Yspeed);
+                healthbar = new GameObject(healthBars[0],x,y+height,Yspeed);
                 healthbar.draw(g, obs);
             }
             if(this.health < 150 && this.health >=100){
-                healthbar = new GameObject(healthBars[1],x,y+width,Yspeed);
+                healthbar = new GameObject(healthBars[1],x,y+height,Yspeed);
                 healthbar.draw(g, obs);
             }
             if(this.health < 100 && this.health >=50){
-                healthbar = new GameObject(healthBars[2],x,y+width,Yspeed);
+                healthbar = new GameObject(healthBars[2],x,y+height,Yspeed);
                 healthbar.draw(g, obs);
             }
             if(health < 50){
-                healthbar = new GameObject(healthBars[3],x,y+width,Yspeed);
+                healthbar = new GameObject(healthBars[3],x,y+height,Yspeed);
                 healthbar.draw(g, obs);
+            }
+            for(int i = 0; i < lifeCount;i++){
+                GameObject lifeObj = new GameObject(this.lifeImg,x+i*lifeImg.getWidth(null)-15,y+height+healthbar.getHeight(),Yspeed);
+                lifeObj.draw(g, obs);
             }
         }
         
@@ -121,11 +129,11 @@ public class PlayerPlane extends GameObject implements Observer{
     
      private  void fire(){
         Bullet playerb;
-        playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,-2,-3);
+        playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,-1,-3);
         myBulletList.add(playerb);
         playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,0,-3);
         myBulletList.add(playerb);
-        playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,2,-3);
+        playerb = new Bullet(bulletImg,x+width/3,y,bulletDamage,1,-3);
         myBulletList.add(playerb);
         //System.out.println("fire!");
            
