@@ -102,17 +102,17 @@ public class EnemyPlane extends GameObject{
             enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,1,4);
             GameWorld.enemybl.add(enemyb);
          }
-         if(shootFreq%30== 0&&enemyType == 5){
+         if(shootFreq%15== 0 && enemyType == 5){
             Bullet enemyb;
-            enemyb = new Bullet(bullet_image,x-width/10,y+5,bullet_damage,-1,4);
+            enemyb = new Bullet(bullet_image,x+width/4-10,y+height,bullet_damage,-1,4);
             GameWorld.enemybl.add(enemyb);
-            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
+            enemyb = new Bullet(bullet_image,x+width/4-5,y+height,bullet_damage,0,4);
             GameWorld.enemybl.add(enemyb);
-            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
+            enemyb = new Bullet(bullet_image,x+width/4,y+height,bullet_damage,0,4);
             GameWorld.enemybl.add(enemyb);
-            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,0,4);
+            enemyb = new Bullet(bullet_image,x+width/4+5,y+height,bullet_damage,0,4);
             GameWorld.enemybl.add(enemyb);
-            enemyb = new Bullet(bullet_image,x+width/10,y+5,bullet_damage,1,4);
+            enemyb = new Bullet(bullet_image,x+width/4+10,y+height,bullet_damage,1,4);
             GameWorld.enemybl.add(enemyb);
          }
      }

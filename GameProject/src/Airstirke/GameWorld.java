@@ -23,7 +23,7 @@ import java.util.Observer;
 public class GameWorld extends JApplet implements Runnable{
     private Thread thread;
     Image sea;
-    Image myPlane,gameOver,win,lose,power,boss_Enemy;
+    Image myPlane,power,boss_Enemy;
     Image island1, island2, island3, blue_enemyImg,white_enemyImg,yellow_enemyImg, back_enemyImg;
     static Image enemyBulletSmall,enemyBulletBig; 
     static Image [] smallExp = new Image[6];
@@ -38,16 +38,16 @@ public class GameWorld extends JApplet implements Runnable{
     GameEvents gameEvent1, gameEvent2;
     int eneCount = 20;
     static boolean isBossDied = false;
-    final int GREEN_ENEMY_DAMAGE = 1;
-    final int YELLOW_ENEMY_DAMAGE = 4;
-    final int WHITE_ENEMY_DAMAGE = 8;
+    final int GREEN_ENEMY_DAMAGE = 3;
+    final int YELLOW_ENEMY_DAMAGE = 6;
+    final int WHITE_ENEMY_DAMAGE = 12;
     final int GREEN_ENEMY_HEALTH = 2;
     final int YELLOW_ENEMY_HEALTH = 4;
     final int WHITE_ENEMY_HEALTH = 6;
     final int TOP_ENEMY_DIRECTION = 0;
     final int BACK_ENEMY_DIRECTION =1;
-    final int BOSS_DAMAGE = 50;
-    final int BOSS_HEALTH = 100;
+    final int BOSS_DAMAGE = 90;
+    final int BOSS_HEALTH = 500;
     int playerPlaneDamage = 10;
     int playerBulletDamage = 4;
     int frameCount = 0;
@@ -55,16 +55,18 @@ public class GameWorld extends JApplet implements Runnable{
     Player player1,player2;
     CollisionDetector CD;
     SoundPlayer sp;
+    ScoreBoard sb_win;
+    ScoreBoard sb_lose;
     static ArrayList<EnemyPlane> enemyl = new ArrayList<EnemyPlane>(10000);
     static ArrayList<Bullet> enemybl = new ArrayList<Bullet>(100000);
     static ArrayList<Explosion> explosions = new ArrayList<Explosion>(100000);
     static ArrayList<PowerUp> powerUp = new ArrayList<PowerUp>();
-       
+          
     public void init() {
         setFocusable(true);
         setBackground(Color.white);
         try {
-       
+       //sea=ImageIO.read(this.getClass().getClassLoader().getResource("water.png"));
         sea = ImageIO.read(new File("Resources/water.png"));
         island1 = ImageIO.read(new File("Resources/island1.png"));
         island2 = ImageIO.read(new File("Resources/island2.png"));
@@ -75,10 +77,8 @@ public class GameWorld extends JApplet implements Runnable{
         white_enemyImg = ImageIO.read(new File("Resources/enemy3_1.png"));
         back_enemyImg = ImageIO.read(new File("Resources/enemy4_1.png"));
         enemyBulletSmall = ImageIO.read(new File("Resources/enemybullet1.png"));
-        enemyBulletBig = ImageIO.read(new File("Resources/enemybullet1.png"));
-        gameOver = ImageIO.read(new File("Resources/gameOver.png"));
-        win = ImageIO.read(new File("Resources/youWin.png"));
-        lose = ImageIO.read(new File("Resources/youLose.png"));
+        enemyBulletBig = ImageIO.read(new File("Resources/enemybullet2.png"));
+       
         boss_Enemy = ImageIO.read(new File("Resources/boss.png"));
         power = ImageIO.read(new File("Resources/powerup.png"));
         //get small explosion image array
@@ -129,7 +129,6 @@ public class GameWorld extends JApplet implements Runnable{
         sp = new SoundPlayer(1,"Resources/background.wav");
         CD = new CollisionDetector(gameEvent1,gameEvent2);
         
-        
         }
         catch (Exception e) {
             System.out.print(e.getStackTrace() +" No resources are found");
@@ -138,7 +137,7 @@ public class GameWorld extends JApplet implements Runnable{
     //function added to control what kind of enemy plane is showed
     public void timelineControl(){
         //create PowerUp
-        if(frameCount%250 == 0 && frameCount < 2000){
+        if(frameCount%350 == 0 && frameCount < 2000){
             powerUp.add(new PowerUp(power,generator,-20,1,1));
         }
         //create 2 enemy planes that fly from the back
@@ -147,28 +146,28 @@ public class GameWorld extends JApplet implements Runnable{
                 enemyl.add( new EnemyPlane(back_enemyImg,4,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,BACK_ENEMY_DIRECTION,480,-2,generator,false,false));
             }
         }
-        if(frameCount == 150 || frameCount == 250){
+        if(frameCount == 150 || frameCount == 250 || frameCount == 450||frameCount == 700 ||frameCount == 2800){
             for(int i = 0; i < eneCount; i++){
                 boolean canShoot;
                 if(i%3 == 0)
                     canShoot = true;
                 else 
                     canShoot = false;
-                enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,canShoot,false));
+                enemyl.add( new EnemyPlane(blue_enemyImg,1,GREEN_ENEMY_HEALTH,GREEN_ENEMY_DAMAGE+10,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,canShoot,false));
             }
         }
-        if(frameCount == 500 || frameCount == 750 || frameCount == 1000){
+        if(frameCount == 800 || frameCount == 1000 || frameCount == 1250 ||frameCount == 1500 ||frameCount == 3200){
            for(int i = 0; i < eneCount; i++){
                 enemyl.add( new EnemyPlane(yellow_enemyImg,2,YELLOW_ENEMY_HEALTH,YELLOW_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,true,false));
            }
         }
-        if(frameCount == 900 || frameCount == 1100||frameCount == 2200){
+        if(frameCount == 1700 || frameCount == 1950||frameCount == 2200 ||frameCount == 2500 ||frameCount == 3600){
             for(int i = 0; i < eneCount; i++){
                 enemyl.add( new EnemyPlane(white_enemyImg,3,WHITE_ENEMY_HEALTH,WHITE_ENEMY_DAMAGE,TOP_ENEMY_DIRECTION,-20-20*i,2,generator,true,false));
            }
         }
         //BOSS
-        if(frameCount == 3000){
+        if(frameCount == 4000){
             enemyl.add( new EnemyPlane(boss_Enemy,5,BOSS_HEALTH,BOSS_DAMAGE,TOP_ENEMY_DIRECTION,-1,1,generator,true,true));
         }
             
@@ -191,7 +190,27 @@ public class GameWorld extends JApplet implements Runnable{
     }
 
     public void drawDemo() { 
-            
+        String content = "PLAYER1 : "+player1.getScore();
+        String content1 = "PLAYER2 : "+player2.getScore();
+        Font stringFont = new Font( "SansSerif", Font.PLAIN, 18 ); 
+        g2.setFont( stringFont ); 
+        
+            if(isBossDied == true){
+                stringFont = new Font( "SansSerif", Font.PLAIN, 25 ); 
+                g2.setFont( stringFont ); 
+                drawBackGroundWithTileImage();
+                g2.drawString(" YOU WIN!", 220, 150);
+                g2.drawString(content, 200, 220);
+                g2.drawString(content1, 200, 250);
+            }else if(!player1.isAlive() && !player2.isAlive()){
+                stringFont = new Font( "SansSerif", Font.PLAIN, 25 ); 
+                g2.setFont( stringFont );
+                drawBackGroundWithTileImage();
+                g2.drawString("GMAE OVER! YOU LOSE!", 170, 150);
+                g2.drawString(content, 200, 220);
+                g2.drawString(content1, 200, 250);
+            }
+            else{
             I1.update();
             I2.update();
             I3.update();
@@ -240,11 +259,6 @@ public class GameWorld extends JApplet implements Runnable{
             I1.draw(g2,this);
             I2.draw(g2,this);
             I3.draw(g2,this);
-                        
-            if(isBossDied == true){
-                g2.drawString("Boss Died!!!", 200, 200);
-            }
-            else{
             player1.getPlane().draw(g2,this);
             player2.getPlane().draw(g2, this);
             
@@ -269,8 +283,7 @@ public class GameWorld extends JApplet implements Runnable{
             }
             //sb1.draw(g2, this);
             //sb2.draw(g2, this);
-            String content = "Player1: "+player1.getScore();
-            String content1 = "Player2: "+player2.getScore();
+            
             g2.drawString(content, 2, 15);
             g2.drawString(content1, 2, 30);
             }

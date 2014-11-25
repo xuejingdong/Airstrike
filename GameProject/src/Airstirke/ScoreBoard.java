@@ -12,26 +12,44 @@ import java.awt.image.ImageObserver;
  *
  * @author Dong
  */
-public class ScoreBoard {
+public class ScoreBoard extends Explosion{
     private int currentScore,x,y,Yspeed;
     private String content;
-    private Player player;
-    
-    public ScoreBoard(int x, int y, int Yspeed,Player p){
-        this.x = x;
-        this.y = y;
-        this.Yspeed = Yspeed;
-        this.player = p;
+    private Image [] img;
+    private int count = -1;
+    private boolean finished;
+            
+    public ScoreBoard(Image [] img,int x, int y,int speed){
+        super(x,y,img);
+        this.Yspeed = speed;
+        boolean finish = false;
     }
     
+    public boolean getFinished(){
+        return this.finished;
+    }
     public void update(){
-        content = "Palyer"+ player.getPlayerID()+ ": "+player.getScore();
-        System.out.println(content);
+        if(count < img.length){
+            System.out.println("I am in update");
+            if(y > 480){
+                count ++;
+            }
+            else{
+                y += Yspeed;
+            }
+                
+        }
+        else 
+            finished = true;
+        
     }
     
     
     public void draw(Graphics g, ImageObserver obs){
-         g.drawString(content, x, y);
+        if (!finished ) {
+             g.drawImage(img[count], x, y, obs);
+         }
+         
     
     }
     

@@ -114,11 +114,11 @@ public class CollisionDetector {
             power = GameWorld.powerUp.get(i);
             Rectangle puBox = new Rectangle(power.getX(), power.getY(),power.getWidth(), power.getHeight());
             if(p1box.intersects(puBox)&&!playerPlane1.getBoom()){//check intersection
-                playerPlane1.addHealth(5);// update player plane' health
+                playerPlane1.addHealth(50);// update player plane' health
                 GameWorld.powerUp.remove(i);// remove this bullet
             }
             if(p2box.intersects(puBox)&&!playerPlane2.getBoom()){//check intersection
-                playerPlane2.addHealth(5);// update player plane' health
+                playerPlane2.addHealth(50);// update player plane' health
                 GameWorld.powerUp.remove(i);// remove this bullet
             }
         }
