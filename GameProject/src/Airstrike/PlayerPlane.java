@@ -49,14 +49,14 @@ public class PlayerPlane extends GameObject implements Observer{
          this.sp = new SoundPlayer(2,soundFileName);
          this.lifeCount = life;
          try{
-             bulletImg = ImageIO.read(new File("Resources/bullet.png"));
-             leftBulletImg = ImageIO.read(new File("Resources/bulletLeft.png"));
-             rightBulletImg = ImageIO.read(new File("Resources/bulletRight.png"));
-             healthBars[0] = ImageIO.read(new File("Resources/health.png"));
-             healthBars[1] = ImageIO.read(new File("Resources/health1.png"));
-             healthBars[2] = ImageIO.read(new File("Resources/health2.png"));
-             healthBars[3] = ImageIO.read(new File("Resources/health3.png"));
-             lifeImg = ImageIO.read(new File("Resources/life.png"));
+             bulletImg = ImageIO.read(PlayerPlane.class.getResource("Resources/bullet.png"));
+             leftBulletImg = ImageIO.read(PlayerPlane.class.getResource("Resources/bulletLeft.png"));
+             rightBulletImg = ImageIO.read(PlayerPlane.class.getResource("Resources/bulletRight.png"));
+             healthBars[0] = ImageIO.read(PlayerPlane.class.getResource("Resources/health.png"));
+             healthBars[1] = ImageIO.read(PlayerPlane.class.getResource("Resources/health1.png"));
+             healthBars[2] = ImageIO.read(PlayerPlane.class.getResource("Resources/health2.png"));
+             healthBars[3] = ImageIO.read(PlayerPlane.class.getResource("Resources/health3.png"));
+             lifeImg = ImageIO.read(PlayerPlane.class.getResource("Resources/life.png"));
          }
          catch (Exception e) {
             System.out.print(e.getMessage() + "Player plane: no resources are found");

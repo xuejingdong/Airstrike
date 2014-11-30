@@ -42,9 +42,6 @@ public class Bullet extends GameObject {
             this.show = false;
         }
     }
-     //update, if collision happen, make the bullet disappear?
-     //if no collsion happen, fly out of the frame, and then?
-   
     public void draw(Graphics g,ImageObserver obs) {
         if(show)  
             g.drawImage(img, x, y, obs);

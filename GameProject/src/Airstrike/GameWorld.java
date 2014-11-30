@@ -32,7 +32,6 @@ public class GameWorld extends JApplet implements Runnable{
     int speed = 1, move = 0;
     Random generator = new Random(1234567);
     Island I1, I2, I3;
-    //PlayerPlane m;
     int w = 640, h = 480; // fixed size window game 
     GameEvents gameEvent1, gameEvent2;
     int eneCount = 20;
@@ -50,7 +49,6 @@ public class GameWorld extends JApplet implements Runnable{
     int playerPlaneDamage = 10;
     int playerBulletDamage = 4;
     int frameCount = 0;
-    EnemyPlane ep;
     Player player1,player2;
     CollisionDetector CD;
     SoundPlayer sp;
@@ -63,36 +61,37 @@ public class GameWorld extends JApplet implements Runnable{
         setFocusable(true);
         setBackground(Color.white);
         try {
-       //sea=ImageIO.read(this.getClass().getClassLoader().getResource("water.png"));
-        sea = ImageIO.read(new File("Resources/water.png"));
-        island1 = ImageIO.read(new File("Resources/island1.png"));
-        island2 = ImageIO.read(new File("Resources/island2.png"));
-        island3 = ImageIO.read(new File("Resources/island3.png"));
-        myPlane = ImageIO.read(new File("Resources/myplane_1.png"));
-        blue_enemyImg = ImageIO.read(new File("Resources/enemy1_1.png"));
-        yellow_enemyImg = ImageIO.read(new File("Resources/enemy2_1.png"));
-        white_enemyImg = ImageIO.read(new File("Resources/enemy3_1.png"));
-        back_enemyImg = ImageIO.read(new File("Resources/enemy4_1.png"));
-        enemyBulletSmall = ImageIO.read(new File("Resources/enemybullet1.png"));
-        enemyBulletBig = ImageIO.read(new File("Resources/enemybullet2.png"));
+        //sea = ImageIO.read(new File("Resources/water.png"));
+        sea = ImageIO.read(GameWorld.class.getResource("Resources/water.png"));
+
+        island1 = ImageIO.read(GameWorld.class.getResource("Resources/island1.png"));
+        island2 = ImageIO.read(GameWorld.class.getResource("Resources/island2.png"));
+        island3 = ImageIO.read(GameWorld.class.getResource("Resources/island3.png"));
+        myPlane = ImageIO.read(GameWorld.class.getResource("Resources/myplane_1.png"));
+        blue_enemyImg = ImageIO.read(GameWorld.class.getResource("Resources/enemy1_1.png"));
+        yellow_enemyImg = ImageIO.read(GameWorld.class.getResource("Resources/enemy2_1.png"));
+        white_enemyImg = ImageIO.read(GameWorld.class.getResource("Resources/enemy3_1.png"));
+        back_enemyImg = ImageIO.read(GameWorld.class.getResource("Resources/enemy4_1.png"));
+        enemyBulletSmall = ImageIO.read(GameWorld.class.getResource("Resources/enemybullet1.png"));
+        enemyBulletBig = ImageIO.read(GameWorld.class.getResource("Resources/enemybullet2.png"));
        
-        boss_Enemy = ImageIO.read(new File("Resources/boss.png"));
-        power = ImageIO.read(new File("Resources/powerup.png"));
+        boss_Enemy = ImageIO.read(GameWorld.class.getResource("Resources/boss.png"));
+        power = ImageIO.read(GameWorld.class.getResource("Resources/powerup.png"));
         //get small explosion image array
-        smallExp[0] = ImageIO.read(new File("Resources/explosion1_1.png"));
-        smallExp[1] = ImageIO.read(new File("Resources/explosion1_2.png"));
-        smallExp[2] = ImageIO.read(new File("Resources/explosion1_3.png"));
-        smallExp[3] = ImageIO.read(new File("Resources/explosion1_4.png"));
-        smallExp[4] = ImageIO.read(new File("Resources/explosion1_5.png"));
-        smallExp[5] = ImageIO.read(new File("Resources/explosion1_6.png"));
+        smallExp[0] = ImageIO.read(GameWorld.class.getResource("Resources/explosion1_1.png"));
+        smallExp[1] = ImageIO.read(GameWorld.class.getResource("Resources/explosion1_2.png"));
+        smallExp[2] = ImageIO.read(GameWorld.class.getResource("Resources/explosion1_3.png"));
+        smallExp[3] = ImageIO.read(GameWorld.class.getResource("Resources/explosion1_4.png"));
+        smallExp[4] = ImageIO.read(GameWorld.class.getResource("Resources/explosion1_5.png"));
+        smallExp[5] = ImageIO.read(GameWorld.class.getResource("Resources/explosion1_6.png"));
         //get big explosion image array
-        bigExp[0] = ImageIO.read(new File("Resources/explosion2_1.png"));
-        bigExp[1] = ImageIO.read(new File("Resources/explosion2_2.png"));
-        bigExp[2] = ImageIO.read(new File("Resources/explosion2_3.png"));
-        bigExp[3] = ImageIO.read(new File("Resources/explosion2_4.png"));
-        bigExp[4] = ImageIO.read(new File("Resources/explosion2_5.png"));
-        bigExp[5] = ImageIO.read(new File("Resources/explosion2_6.png"));
-        bigExp[6] = ImageIO.read(new File("Resources/explosion2_7.png"));
+        bigExp[0] = ImageIO.read(GameWorld.class.getResource("Resources/explosion2_1.png"));
+        bigExp[1] = ImageIO.read(GameWorld.class.getResource("Resources/explosion2_2.png"));
+        bigExp[2] = ImageIO.read(GameWorld.class.getResource("Resources/explosion2_3.png"));
+        bigExp[3] = ImageIO.read(GameWorld.class.getResource("Resources/explosion2_4.png"));
+        bigExp[4] = ImageIO.read(GameWorld.class.getResource("Resources/explosion2_5.png"));
+        bigExp[5] = ImageIO.read(GameWorld.class.getResource("Resources/explosion2_6.png"));
+        bigExp[6] = ImageIO.read(GameWorld.class.getResource("Resources/explosion2_7.png"));
         
         I1 = new Island(island1, 100, 100, speed, generator);
         I2 = new Island(island2, 200, 400, speed, generator);
@@ -192,6 +191,7 @@ public class GameWorld extends JApplet implements Runnable{
         String content1 = "PLAYER2 : "+player2.getScore();
         Font stringFont = new Font( "SansSerif", Font.PLAIN, 18 ); 
         g2.setFont( stringFont ); 
+        g2.setColor(Color.white);
         
             if(isBossDied == true){
                 stringFont = new Font( "SansSerif", Font.PLAIN, 25 ); 

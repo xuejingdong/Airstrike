@@ -31,7 +31,7 @@ public class Player {
         this.fire = fire;
         this.score = 0;
         try{
-             planeImg = ImageIO.read(new File("Resources/myplane_1.png"));
+             planeImg = ImageIO.read(Player.class.getResource("Resources/myplane_1.png"));
              
          }
          catch (Exception e) {
