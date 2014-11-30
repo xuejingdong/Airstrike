@@ -133,8 +133,9 @@ public class GameWorld extends JApplet implements Runnable{
     //function added to control what kind of enemy plane is showed
     public void timelineControl(){
         //create PowerUp
-        if(frameCount%350 == 0 && frameCount < 2000){
-            powerUp.add(new PowerUp(power,generator,-20,1,1));
+        if(frameCount%350 == 0 && frameCount < 4000){
+            int x = Math.abs(generator.nextInt() % (600 - 30));
+            powerUp.add(new PowerUp(power,x,-20,1,1));
         }
         //create 2 enemy planes that fly from the back
         if(frameCount%120 == 0 && frameCount < 2000){
@@ -224,7 +225,7 @@ public class GameWorld extends JApplet implements Runnable{
                 enemyl.get(i).update();
             }
             for(int i = 0; i < enemybl.size(); i++){
-                enemybl.get(i).update();
+                enemybl.get(i).update(w,h);
             }
             for(int i = 0; i < powerUp.size(); i++){
                 powerUp.get(i).update();
@@ -232,14 +233,14 @@ public class GameWorld extends JApplet implements Runnable{
             //update player1's bullet list
             for(int i = 0; i < player1.getPlane().getBulletList().size(); i++){
                 if((player1.getPlane().getBulletList().get(i)).getShow())
-                    player1.getPlane().getBulletList().get(i).update();
+                    player1.getPlane().getBulletList().get(i).update(w,h);
                 else
                     player1.getPlane().getBulletList().remove(i);
             }
             //update player2's bullet list
             for(int i = 0; i < player2.getPlane().getBulletList().size(); i++){
                 if((player2.getPlane().getBulletList().get(i)).getShow())
-                    player2.getPlane().getBulletList().get(i).update();
+                    player2.getPlane().getBulletList().get(i).update(w,h);
                 else
                     player2.getPlane().getBulletList().remove(i);
             }

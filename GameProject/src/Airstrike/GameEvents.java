@@ -40,4 +40,12 @@ public class GameEvents extends Observable{
        notifyObservers(this);  
     }
     
+    public int getType(){
+        return this.type;
+    }
+    
+    public Object getEvent(){
+        return this.event;
+    }
+    
 }
