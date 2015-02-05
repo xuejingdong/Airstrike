@@ -34,7 +34,7 @@ public class GameWorld extends JApplet implements Runnable{
     Island I1, I2, I3;
     int w = 640, h = 480; // fixed size window game 
     GameEvents gameEvent1, gameEvent2;
-    int eneCount = 20;
+    int eneCount = 40;
     static boolean isBossDied = false;
     final int GREEN_ENEMY_DAMAGE = 3;
     final int YELLOW_ENEMY_DAMAGE = 6;
@@ -134,7 +134,7 @@ public class GameWorld extends JApplet implements Runnable{
     public void timelineControl(){
         //create PowerUp
         if(frameCount%350 == 0 && frameCount < 4000){
-            int x = Math.abs(generator.nextInt() % (600 - 30));
+            int x = (int)Math.abs(generator.nextInt() % (600 - 30));
             powerUp.add(new PowerUp(power,x,-20,1,1));
         }
         //create 2 enemy planes that fly from the back
@@ -165,7 +165,7 @@ public class GameWorld extends JApplet implements Runnable{
            }
         }
         //BOSS
-        if(frameCount == 4000){
+        if(frameCount == 4500){
             enemyl.add( new EnemyPlane(boss_Enemy,5,BOSS_HEALTH,BOSS_DAMAGE,TOP_ENEMY_DIRECTION,-1,1,generator,true,true));
         }
             

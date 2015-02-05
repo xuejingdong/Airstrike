@@ -84,7 +84,7 @@ public class PlayerPlane extends GameObject implements Observer{
      }
      public void isDied(){
          GameWorld.explosions.add(new Explosion(x,y,GameWorld.bigExp));
-         System.out.println("player plane explodes");
+         //System.out.println("player plane explodes");
          
          sp.play();
          if(this.lifeCount >1){
